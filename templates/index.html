@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <!-- <meta name="viewport" content="width=device-width, initial-scale=1.0" /> -->
+    <title>bookmall</title>
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/swiper/swiper-bundle.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+    />
+    <link rel="stylesheet" href={{ url_for('static', filename='style.css') }}/>
+  </head>
+  <body>
+    <div class="headout">
+      <header>
+        <div class="maintitle" type="button">
+          <div id="maintitle_book">Book</div>
+          <div id="maintitle_mall">mall</div>
+        </div>
+        <div class="search" action="/api/books" method="GET">
+          <div class="s1">
+            <input
+              type="text"
+              placeholder="請輸入書本名稱查詢"
+              onfocus="this.placeholder=''"
+              onblur="this.placeholder='請輸入書本名稱查詢'"
+              id="searchkeyword"
+              name="keyword"
+            />
+            <button class="btn2" id="searchBtn" style="border: none">
+              <img
+                id="b2"
+                style="width: 24px; height: 24px"
+                src="../static/search.png"
+              />
+            </button>
+          </div>
+        </div>
+        <nav class="nav_text">
+          <a style="margin-right: 1rem" id="reservation_button" type="button"
+            ><img
+              style="width: 28px; height: 28px"
+              src="../static/shopping_cart.png"
+          /></a>
+          <a id="login_button">登入/註冊</a>
+          <div id="logout_button" type="button">登出系統</div>
+        </nav>
+      </header>
+    </div>
+
+    <div class="popup">
+      <div class="popup-content">
+        <div class="top-line"></div>
+        <div class="popup-title">
+          登入會員帳號
+          <img src="../static/icon_close.svg" alt="Close" class="close" />
+        </div>
+        <form>
+          <input
+            class="login_input"
+            type="text"
+            placeholder="輸入電子郵件"
+            name="e-mail"
+            id="inputemail"
+          />
+          <input
+            class="login_input"
+            type="password"
+            placeholder="輸入密碼"
+            name="password"
+            id="inputpassword"
+          />
+          <div>
+            <button class="login_text" type="button">登入帳戶</button>
+          </div>
+        </form>
+        <div class="loginerror"></div>
+
+        <div class="no_account">
+          <span>還沒有帳戶?</span>
+          <a id="switch_sinup">點此註冊</a>
+        </div>
+      </div>
+    </div>
+    <div class="popup_signup">
+      <div class="popup-content2">
+        <div class="top-line"></div>
+        <div class="popup-title">
+          註冊會員帳號
+          <img src="../static/icon_close.svg" alt="Close" class="close2" />
+        </div>
+        <form action="/api/user" method="POST">
+          <input
+            class="login_input"
+            type="text"
+            placeholder="輸入姓名"
+            name="name"
+            id="singupname"
+          />
+          <input
+            class="login_input"
+            type="text"
+            placeholder="輸入電子郵件"
+            name="e-mail"
+            id="singupemail"
+          />
+          <input
+            class="login_input"
+            type="password"
+            placeholder="輸入密碼"
+            name="password"
+            id="singuppassword"
+          />
+          <div>
+            <button class="siginup_text" type="button">註冊帳戶</button>
+          </div>
+        </form>
+        <div class="successlogin"></div>
+        <div class="have_account">
+          <span>已經有帳戶了?</span>
+          <a id="switch_login">點此登入</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="welcome">
+      <img id="welcome_img" src="../static/Hero.png" />
+    </div>
+    <div id="section_warp">
+      <div id="science_box">應用科學</div>
+      <section>
+        <div class="dotbox">
+          <div class="dots">
+            <span style="--i: 1"></span>
+            <span style="--i: 2"></span>
+            <span style="--i: 3"></span>
+            <span style="--i: 4"></span>
+            <span style="--i: 5"></span>
+            <span style="--i: 6"></span>
+            <span style="--i: 7"></span>
+            <span style="--i: 8"></span>
+            <span style="--i: 9"></span>
+            <span style="--i: 10"></span>
+            <span style="--i: 11"></span>
+            <span style="--i: 12"></span>
+            <span style="--i: 13"></span>
+            <span style="--i: 14"></span>
+            <span style="--i: 15"></span>
+          </div>
+        </div>
+        <div class="swiper mySwiper container">
+          <div class="swiper-wrapper"></div>
+        </div>
+        <div class="swiper-pagination"></div>
+        <div class="arrow prve">
+          <span class="slider_left"></span>
+        </div>
+        <div class="arrow next">
+          <span class="slider_right"></span>
+        </div>
+      </section>
+      <div id="science_box">語文</div>
+      <section>
+        <div class="dotbox2">
+          <div class="dots">
+            <span style="--i: 1"></span>
+            <span style="--i: 2"></span>
+            <span style="--i: 3"></span>
+            <span style="--i: 4"></span>
+            <span style="--i: 5"></span>
+            <span style="--i: 6"></span>
+            <span style="--i: 7"></span>
+            <span style="--i: 8"></span>
+            <span style="--i: 9"></span>
+            <span style="--i: 10"></span>
+            <span style="--i: 11"></span>
+            <span style="--i: 12"></span>
+            <span style="--i: 13"></span>
+            <span style="--i: 14"></span>
+            <span style="--i: 15"></span>
+          </div>
+        </div>
+        <div class="swiper mySwiper2 container">
+          <div class="swiper-wrapper" id="language_swiper-wrapper"></div>
+        </div>
+        <div class="swiper-pagination2"></div>
+        <div class="arrow prve2">
+          <span class="slider_left2"></span>
+        </div>
+        <div class="arrow next2">
+          <span class="slider_right2"></span>
+        </div>
+      </section>
+      <div id="science_box">藝術</div>
+      <section>
+        <div class="dotbox3">
+          <div class="dots">
+            <span style="--i: 1"></span>
+            <span style="--i: 2"></span>
+            <span style="--i: 3"></span>
+            <span style="--i: 4"></span>
+            <span style="--i: 5"></span>
+            <span style="--i: 6"></span>
+            <span style="--i: 7"></span>
+            <span style="--i: 8"></span>
+            <span style="--i: 9"></span>
+            <span style="--i: 10"></span>
+            <span style="--i: 11"></span>
+            <span style="--i: 12"></span>
+            <span style="--i: 13"></span>
+            <span style="--i: 14"></span>
+            <span style="--i: 15"></span>
+          </div>
+        </div>
+        <div class="swiper mySwiper3 container">
+          <div class="swiper-wrapper" id="art_swiper-wrapper"></div>
+        </div>
+        <div class="swiper-pagination3"></div>
+        <div class="arrow prve3">
+          <span class="slider_left3"></span>
+        </div>
+        <div class="arrow next3">
+          <span class="slider_right3"></span>
+        </div>
+      </section>
+      <div id="science_box">人文</div>
+      <section>
+        <div class="dotbox4">
+          <div class="dots">
+            <span style="--i: 1"></span>
+            <span style="--i: 2"></span>
+            <span style="--i: 3"></span>
+            <span style="--i: 4"></span>
+            <span style="--i: 5"></span>
+            <span style="--i: 6"></span>
+            <span style="--i: 7"></span>
+            <span style="--i: 8"></span>
+            <span style="--i: 9"></span>
+            <span style="--i: 10"></span>
+            <span style="--i: 11"></span>
+            <span style="--i: 12"></span>
+            <span style="--i: 13"></span>
+            <span style="--i: 14"></span>
+            <span style="--i: 15"></span>
+          </div>
+        </div>
+        <div class="swiper mySwiper4 container">
+          <div class="swiper-wrapper" id="humanities_swiper-wrapper"></div>
+        </div>
+        <div class="swiper-pagination4"></div>
+        <div class="arrow prve4">
+          <span class="slider_left4"></span>
+        </div>
+        <div class="arrow next4">
+          <span class="slider_right4"></span>
+        </div>
+      </section>
+    </div>
+
+    <div class="error" id="error"></div>
+    <footer>
+      <div class="foot">
+        <div>COPYRIGHT ©2022 Bookmall</div>
+      </div>
+    </footer>
+    <script type="text/javascript" src="../static/index.js"></script>
+    <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+    <script type="text/javascript" src="../static/member.js"></script>
+    <script>
+      var swiper = new Swiper(".mySwiper", {
+        slidesPerView: 4,
+        spaceBetween: 30,
+        slidesPerGroup: 4,
+        loop: true,
+        loopFillGroupWithBlank: true,
+        pagination: {
+          el: ".swiper-pagination",
+          clickable: true,
+        },
+        navigation: {
+          nextEl: ".next",
+          prevEl: ".prve",
+        },
+      });
+
+      var swiper2 = new Swiper(".mySwiper2", {
+        slidesPerView: 4,
+        spaceBetween: 30,
+        slidesPerGroup: 4,
+        loop: false,
+        loopFillGroupWithBlank: true,
+        pagination: {
+          el: ".swiper-pagination2",
+          clickable: true,
+        },
+        navigation: {
+          nextEl: ".next2",
+          prevEl: ".prve2",
+        },
+      });
+
+      var swiper3 = new Swiper(".mySwiper3", {
+        slidesPerView: 4,
+        spaceBetween: 30,
+        slidesPerGroup: 4,
+        loop: true,
+        loopFillGroupWithBlank: true,
+        pagination: {
+          el: ".swiper-pagination3",
+          clickable: true,
+        },
+        navigation: {
+          nextEl: ".next3",
+          prevEl: ".prve3",
+        },
+      });
+
+      var swiper4 = new Swiper(".mySwiper4", {
+        slidesPerView: 4,
+        spaceBetween: 30,
+        slidesPerGroup: 4,
+        loop: true,
+        loopFillGroupWithBlank: true,
+        pagination: {
+          el: ".swiper-pagination4",
+          clickable: true,
+        },
+        navigation: {
+          nextEl: ".next4",
+          prevEl: ".prve4",
+        },
+      });
+    </script>
+  </body>
+</html>

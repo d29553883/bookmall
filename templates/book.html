@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href={{ url_for('static', filename='book.css') }}/>
+    <title>bookmall</title>
+  </head>
+  <body>
+    <div class="headout">
+      <header>
+        <div class="maintitle" type="button">
+          <div id="maintitle_book">Book</div>
+          <div id="maintitle_mall">mall</div>
+        </div>
+        <div class="search" action="/api/books" method="GET"></div>
+        <nav class="nav_text">
+          <a style="margin-right: 1rem" id="reservation_button" type="button"
+            ><img
+              style="width: 28px; height: 28px"
+              src="../static/shopping_cart.png"
+          /></a>
+          <a id="login_button">登入/註冊</a>
+          <div id="logout_button" type="button">登出系統</div>
+        </nav>
+      </header>
+    </div>
+
+    <div class="popup">
+      <div class="popup-content">
+        <div class="top-line"></div>
+        <div class="popup-title">
+          登入會員帳號
+          <img src="../static/icon_close.svg" alt="Close" class="close" />
+        </div>
+        <form>
+          <input
+            class="login_input"
+            type="text"
+            placeholder="輸入電子郵件"
+            name="e-mail"
+            id="inputemail"
+          />
+          <input
+            class="login_input"
+            type="password"
+            placeholder="輸入密碼"
+            name="password"
+            id="inputpassword"
+          />
+          <div>
+            <button class="login_text" type="button">登入帳戶</button>
+          </div>
+        </form>
+        <div class="loginerror"></div>
+
+        <div class="no_account">
+          <span>還沒有帳戶?</span>
+          <a id="switch_sinup">點此註冊</a>
+        </div>
+      </div>
+    </div>
+    <div class="popup_signup">
+      <div class="popup-content2">
+        <div class="top-line"></div>
+        <div class="popup-title">
+          註冊會員帳號
+          <img src="../static/icon_close.svg" alt="Close" class="close2" />
+        </div>
+        <form action="/api/user" method="POST">
+          <input
+            class="login_input"
+            type="text"
+            placeholder="輸入姓名"
+            name="name"
+            id="singupname"
+          />
+          <input
+            class="login_input"
+            type="text"
+            placeholder="輸入電子郵件"
+            name="e-mail"
+            id="singupemail"
+          />
+          <input
+            class="login_input"
+            type="password"
+            placeholder="輸入密碼"
+            name="password"
+            id="singuppassword"
+          />
+          <div>
+            <button class="siginup_text" type="button">註冊帳戶</button>
+          </div>
+        </form>
+        <div class="successlogin"></div>
+        <div class="have_account">
+          <span>已經有帳戶了?</span>
+          <a id="switch_login">點此登入</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="section1">
+      <div id="pic_container">
+        <div id="tab"></div>
+      </div>
+      <div class="s1_right">
+        <div class="titlebox"></div>
+        <div class="title2box"></div>
+        <div class="line"></div>
+        <div class="booking">
+          <div class="category"></div>
+          <div class="b1">售價</div>
+          <div class="b2"></div>
+          <button id="addCartBtn" type="button">
+            <tag id="addCartBtntext">加到購物車</tag>
+          </button>
+          <div id="warning"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section2">
+      <div class="description_title">概述</div>
+      <div class="contentbox"></div>
+    </div>
+
+    <footer>
+      <div class="foot">
+        <div>COPYRIGHT ©2022 Bookmall</div>
+      </div>
+    </footer>
+
+    <script type="text/javascript" src="../static/book.js"></script>
+    <script type="text/javascript" src="../static/member.js"></script>
+  </body>
+</html>

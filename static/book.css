@@ -1,0 +1,382 @@
+
+* {
+  margin: 0;
+  padding: 0;
+  font-family: "Noto Sans TC";
+}
+
+.headout {
+  background-color: #ffffff;
+  position: sticky;
+  top: 0;
+  z-index: 5;
+  border-bottom: 0.5px solid #e8e8e8;
+}
+header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: auto;
+  max-width: 1200px;
+  height: 54px;
+  background-color: #ffffff;
+}
+.maintitle {
+  display: flex;
+  align-items: center;
+  font-weight: bold;
+  font-size: 30px;
+  margin-left: 15px;
+  cursor: pointer;
+  margin-right: 50px;
+}
+#maintitle_book{
+  color:#463C74;
+}
+#maintitle_mall{
+  color:#B4D51E;
+}
+nav {
+  display: flex;
+  list-style-type: none;
+  justify-content: flex-end;
+  flex: auto;
+}
+
+input {
+  width: 400px;
+  height: 42px;
+  border-radius: 5px 0 0 5px;
+  padding-left: 13px;
+}
+a {
+  text-decoration: none;
+  color: #666666;
+}
+.successlogin {
+  display: flex;
+  font-size: 16px;
+  text-align: center;
+  justify-content: center;
+}
+.loginerror {
+  display: flex;
+  justify-content: center;
+  font-size: 16px;
+}
+
+.nav_text {
+  display: flex;
+  list-style-type: none;
+  justify-content: flex-end;
+  flex: auto;
+}
+.popup_signup {
+  background: rgb(0, 0, 0, 0.4);
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  top: 0;
+  display: none;
+  z-index: 20;
+  justify-content: center;
+}
+.popup {
+  background: rgb(0, 0, 0, 0.4);
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  top: 0;
+  display: none;
+  z-index: 20;
+  justify-content: center;
+}
+.popup-content {
+  margin-top: 80px;
+  width: 340px;
+  height: 280px;
+  max-height: 325px;
+  background: #ffffff;
+  border-radius: 5px;
+  position: relative;
+}
+.popup-content2 {
+  margin-top: 80px;
+  width: 340px;
+  height: 332px;
+  max-height: 370px;
+  background: #ffffff;
+  border-radius: 5px;
+  position: relative;
+}
+.top-line {
+  height: 10px;
+  background-image: linear-gradient(to right, #66aabb, #337788);
+  border-radius: 5px 5px 0px 0px;
+}
+.popup-title {
+  display: flex;
+  justify-content: center;
+  font-size: 24px;
+  margin: 15px 15px 10px 15px;
+  font-weight: bold;
+  color: #666666;
+}
+.login_input {
+  margin: 5px 15px;
+  display: flex;
+  flex-wrap: wrap;
+  font-size: 16px;
+  width: 276px;
+  height: 13px;
+  background-color: #ffffff;
+  border-radius: 5px;
+  padding: 15px;
+  border: 1px solid #cccccc;
+}
+
+.siginup_text {
+  display: flex;
+  border: 0;
+  background-color: #448899;
+  justify-content: center;
+  align-items: center;
+  border-radius: 5px;
+  width: 310px;
+  height: 47px;
+  margin: 5px 15px;
+  cursor: pointer;
+  color: #ffffff;
+  text-decoration: none;
+}
+.login_text {
+  display: flex;
+  border: 0;
+  background-color: #448899;
+  justify-content: center;
+  align-items: center;
+  border-radius: 5px;
+  width: 310px;
+  height: 47px;
+  margin: 5px 15px;
+  cursor: pointer;
+  color: #ffffff;
+  text-decoration: none;
+  font-size: 19px;
+  transition: 0.4s;
+  opacity: 1;
+}
+.login_text:hover{
+  opacity: 0.7;
+}
+.close {
+  width: 16px;
+  height: 16px;
+  position: absolute;
+  top: 30px;
+  right: 15px;
+  cursor: pointer;
+}
+.close2 {
+  width: 16px;
+  height: 16px;
+  position: absolute;
+  top: 30px;
+  right: 15px;
+  cursor: pointer;
+}
+.no_account {
+  display: flex;
+  font-size: 16px;
+  width: 310px;
+  height: 22px;
+  justify-content: center;
+  align-items: center;
+  margin: 5px 15px;
+  color: #666666;
+}
+.have_account {
+  display: flex;
+  font-size: 16px;
+  width: 310px;
+  height: 22px;
+  justify-content: center;
+  align-items: center;
+  margin: 5px 15px;
+  color: #666666;
+}
+
+#reservation_button {
+  text-decoration: none;
+  color: #666666;
+  cursor: pointer;
+}
+#login_button {
+  text-decoration: none;
+  color: #666666;
+  display: flex;
+  cursor: pointer;
+}
+#logout_button {
+  text-decoration: none;
+  color: #666666;
+  display: flex;
+  cursor: pointer;
+}
+#switch_sinup {
+  color: #666666;
+  text-decoration: none;
+  cursor: pointer;
+}
+#switch_login {
+  color: #666666;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+
+#addCartBtn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 154px;
+  height: 36px;
+  font-size: 19px;
+  border: none;
+  /* margin-left: 20px; */
+  color: #ffffff;
+  background-color: #B4D51E;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: 0.4s;
+  opacity: 1;
+}
+#addCartBtn:hover{
+  opacity: 0.7;
+}
+#addCartBtntext {
+  margin-bottom: 3px;
+}
+
+
+#pic_container {
+  display: flex;
+  justify-content: center;
+  width: 540px;
+  height: 424px;
+  position: relative;
+  margin: 15px 15px 15px 15px;
+}
+.tabImg {
+  flex: none;
+  width: 340px;
+  height: 424px;
+  object-fit: cover;
+  border-radius: 5px;
+}
+
+.section1 {
+  display: flex;
+  max-width: 1200px;
+  width: 1200px;
+  height: 480px;
+  margin: auto;
+  border-color: #463C74;
+  border: solid 1px;
+}
+
+.titlebox {
+  display: flex;
+  width: 600px;
+  height: 33px;
+  margin: 30px 25px 5px 5px;
+  color: #666666;
+  font-weight: bold;
+  font-size: 24px;
+}
+.title2box {
+  display: flex;
+  width: 600px;
+  height: 22px;
+  margin: 10px 10px 10px 5px;
+  font-size: 16px;
+  color: #666666;
+}
+.booking {
+  display: flex;
+  flex-direction: column;
+  width: 600px;
+  height: 302px;
+  margin: 10px 5px 0px 5px;
+  /* background-color: #FBF4E2; */
+  border-radius: 3px;
+  font-size: 16px;
+  color: #666666;
+  overflow: hidden;
+}
+
+.b1 {
+  display: flex;
+  width: 560px;
+  height: 22px;
+  margin: 15px 20px 0px 0px;
+  
+}
+
+.b2 {
+  display: flex;
+  width: 560px;
+  font-size: 35px;
+  height: 35px;
+  margin: 0px 20px 20px 0px;
+  font-weight: bold;
+}
+.category{
+  display: flex;
+  width: 560px;
+  height: 22px;
+  margin: 15px 20px 15px 0px;
+}
+.line {
+  display: flex;
+  width: 600px;
+  height: 1px;
+  max-width: 600px;
+  background-color: #cccbcb;
+}
+
+
+.section2 {
+  display: flex;
+  margin: auto;
+  flex-direction: column;
+  width: 1180px;
+  font-size: 16px;
+  color: #666666;
+}
+.contentbox {
+  display: flex;
+  width: 1180px;
+  margin: 10px 0px 20px 0px;
+}
+.description_title {
+  display: flex;
+  width: 1180px;
+  height: 32px;
+  font-size: 25px;
+  font-weight: bold;
+  margin-top: 30px;
+  margin-bottom: 20px;
+}
+
+footer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 104px;
+  margin-top: 55px;
+  justify-content: space-around;
+  color: #828282;
+  font-size: 16px;
+  background-color: #FBF4E2;
+}
