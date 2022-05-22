@@ -32,6 +32,7 @@ function cartInfo() {
           let price_list = [];
           let image_list = [];
           let category_list = [];
+
           for (let i = 0; i < data.length; i++) {
             name_list.push(data[i].name);
             author_list.push(data[i].author);
@@ -48,18 +49,38 @@ function cartInfo() {
             cartItemImage.className = "cart-item-image";
             let image = document.createElement("img");
             image.src = image_list[i];
-            let cartItemNames = document.createElement("div");
-            cartItemNames.className = "cart-item-title";
-            let nameTextNode = document.createTextNode(name_list[i]);
+            let cartItemText = document.createElement("div");
+            cartItemText.className = "cart-item-text";
+            let name_box = document.createElement("div");
+            name_box.className = "name_box";
+            let nameTextNode = document.createTextNode(
+              "書名 : " + name_list[i]
+            );
+            let author_box = document.createElement("div");
+            let authorTextNode = document.createTextNode(
+              "作者 : " + author_list[i]
+            );
             let cart_price = document.createElement("div");
-            cart_price.className = "cart-price";
-            let priceTextNode = document.createTextNode(price_list[i]);
-            cartItemNames.appendChild(nameTextNode);
+            cart_price.className = "price_box";
+            let priceTextNode = document.createTextNode(price_list[i] + " 元 ");
+            let delete_button = document.createElement("div");
+            delete_button.id = "delete";
+            delete_button.setAttribute("type", "button");
+            let icon = document.createElement("img");
+            icon.id = id_list[i];
+            icon.setAttribute("onclick", "deleteBook(" + icon.id + ")");
+            icon.src = "../static/icon_delete.svg";
+            delete_button.appendChild(icon);
+            name_box.appendChild(nameTextNode);
+            author_box.appendChild(authorTextNode);
+            cartItemText.appendChild(name_box);
+            cartItemText.appendChild(author_box);
             cart_price.appendChild(priceTextNode);
             cartItemImage.appendChild(image);
             cartItemBox.appendChild(cartItemImage);
-            cartItemBox.appendChild(cartItemNames);
+            cartItemBox.appendChild(cartItemText);
             cartItemBox.appendChild(cart_price);
+            cartItemBox.appendChild(delete_button);
             cart_items.appendChild(cartItemBox);
           }
         }
@@ -70,3 +91,24 @@ function cartInfo() {
 }
 
 cartInfo();
+
+function deleteBook(datanumber) {
+  let myDataObject = { deleteBookId: datanumber };
+  let deleteButtonIcon = document.getElementById(datanumber);
+
+  fetch("/api/addCart", {
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(myDataObject),
+  })
+    .then(function (response) {
+      return response.json();
+    })
+    .then((result) => {
+      if (result.ok === true) {
+        deleteButtonIcon.parentElement.parentElement.innerHTML = "";
+      }
+    });
+}

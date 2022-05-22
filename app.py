@@ -287,7 +287,30 @@ def addCart():
 			"message": "未登入系統，拒絕存取"
 		}),403				
 
-
+@app.route("/api/addCart", methods=["DELETE"])
+def deleteBook():
+	try:
+		if session != {}:
+			cnx=cnxpool.get_connection()
+			mycursor=cnx.cursor()			
+			req = request.get_json()
+			deleteBookId = req["deleteBookId"]		
+			sql = "DELETE FROM cart where id = %s"
+			adr = (deleteBookId,)
+			mycursor.execute(sql, adr)
+			cnx.commit()
+			return jsonify({
+				"ok": True
+			})
+		else:
+			return jsonify({
+				"error": True,
+				"message": "未登入系統，拒絕存取"
+			}),403
+	finally:
+		if cnx.in_transaction:
+			cnx.rollback()
+		cnx.close()		
 
 
 

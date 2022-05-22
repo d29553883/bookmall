@@ -111,7 +111,7 @@ a {
 }
 .top-line {
   height: 10px;
-  background-image: linear-gradient(to right, #66aabb, #337788);
+  background-image: linear-gradient(to right, #b4d51e, #7e9515);
   border-radius: 5px 5px 0px 0px;
 }
 .popup-title {
@@ -138,7 +138,7 @@ a {
 .siginup_text {
   display: flex;
   border: 0;
-  background-color: #448899;
+  background-color: #7e9515;
   justify-content: center;
   align-items: center;
   border-radius: 5px;
@@ -152,7 +152,7 @@ a {
 .login_text {
   display: flex;
   border: 0;
-  background-color: #448899;
+  background-color: #7e9515;
   justify-content: center;
   align-items: center;
   border-radius: 5px;
@@ -299,25 +299,45 @@ footer {
   font-size: 1.2em;
   color: #333;
 }
-
+.name_box{
+  font-weight: bold;
+}
+.price_box{
+  display: flex;
+  font-size: 30px;
+  font-weight: bold;
+}
 .cartItemBox{
   display: flex;
   width: 1200px;
+  margin-top: 10px;
+  margin-bottom: 10px;
 }
 
-.cart-item-title {
+.cart-item-text {
+  display: flex;
   color: #333;
+  width:700px;
   margin-left: .5em;
   font-size: 1.2em;
+  flex-direction: column;
 }
 
 .cart-item-image {
-  width: 75px;
-  height: 100px;
+  width: 130px;
+  height: 160px;
   border-radius: 10px;
 }
 .cart-item-image img{
-  width: 75px;
-  height: 100px;
+  width: 130px;
+  height: 160px;
   object-fit: cover;
+}
+
+#delete {
+  display: flex;
+  width: 30px;
+  height: 30px;
+  margin-top: 5px; 
+  cursor: pointer;
 }
