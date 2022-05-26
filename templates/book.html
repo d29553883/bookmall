@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href={{ url_for('static', filename='book.css') }}/>
-    <title>bookmall</title>
+    <title>bookPage</title>
   </head>
   <body>
     <div class="headout">
@@ -16,6 +16,11 @@
         </div>
         <div class="search" action="/api/books" method="GET"></div>
         <nav class="nav_text">
+          <a style="margin-right: 1rem" id="account_button" type="button"
+            ><img
+              style="width: 26px; height: 26px"
+              src="../static/iconmonstr-user-6.svg"
+          /></a>
           <a style="margin-right: 1rem" id="reservation_button" type="button"
             ><img
               style="width: 28px; height: 28px"
@@ -29,9 +34,11 @@
 
     <div class="popup">
       <div class="popup-content">
-        <div class="top-line"></div>
         <div class="popup-title">
-          登入會員帳號
+          <div class="maintitle">
+            <div id="maintitle_book">Book</div>
+            <div id="maintitle_mall">mall</div>
+          </div>
           <img src="../static/icon_close.svg" alt="Close" class="close" />
         </div>
         <form>
@@ -63,9 +70,11 @@
     </div>
     <div class="popup_signup">
       <div class="popup-content2">
-        <div class="top-line"></div>
         <div class="popup-title">
-          註冊會員帳號
+          <div class="maintitle">
+            <div id="maintitle_book">Book</div>
+            <div id="maintitle_mall">mall</div>
+          </div>
           <img src="../static/icon_close.svg" alt="Close" class="close2" />
         </div>
         <form action="/api/user" method="POST">

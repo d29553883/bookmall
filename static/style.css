@@ -216,6 +216,11 @@ a {
   margin: 5px 15px;
   color: #666666;
 }
+#account_button{
+  cursor: pointer;
+  display: none;
+}
+
 #reservation_button {
   text-decoration: none;
   color: #666666;
@@ -549,13 +554,25 @@ section .card .image img{
  }
 }
 
+#cartTextBox{
+  display: flex;
+  width: 300px;
+  justify-content: center;
+  font-size: 25px;
+  color: #666666;
+  margin-top: 20px;
 
+}
 
 .error {
   display: flex;
+  width: 300px;
+  margin: auto;
+  margin-top: 50px;
   justify-content: center;
+  flex-direction: column;
   font-size: 30px;
-  height: 50px;
+  color: #666666;
 }
 
 footer {

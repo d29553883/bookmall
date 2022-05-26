@@ -29,6 +29,9 @@ def book(id):
 @app.route("/addCart")
 def booking():
 	return render_template("addCart.html")
+@app.route("/account")
+def account():
+	return render_template("account.html")	
 @app.route("/api/books")
 def books():
   keyword = request.args.get("keyword")
@@ -200,7 +203,6 @@ def check():
 			mycursor.execute(sql, adr)
 			myresult = mycursor.fetchall()
 			count = myresult[0][0]
-			print(myresult)
 			print(count)
 			if count != 0:
 				sql2 = "SELECT id,name,category,author,price,image FROM cart WHERE email = %s"		
@@ -220,10 +222,13 @@ def check():
 					}
 					i+=1
 					list.append(prelist.copy())
-				print(myresult2)
-			return jsonify({
-				"count":count,"data":list
-		}),200
+				return jsonify({
+					"count":count,"data":list
+			}),200
+			else:
+				return jsonify({
+					"data":None
+				})		
 
 		else:
 			return jsonify({
@@ -295,12 +300,18 @@ def deleteBook():
 			mycursor=cnx.cursor()			
 			req = request.get_json()
 			deleteBookId = req["deleteBookId"]		
+			sql2 = "SELECT price FROM cart where id = %s"
+			adr2 = (deleteBookId,)
+			mycursor.execute(sql2, adr2)
+			myresult = mycursor.fetchone()
+
 			sql = "DELETE FROM cart where id = %s"
 			adr = (deleteBookId,)
 			mycursor.execute(sql, adr)
-			cnx.commit()
+			cnx.commit()		
 			return jsonify({
-				"ok": True
+				"ok": True,
+				"price":myresult[0]
 			})
 		else:
 			return jsonify({

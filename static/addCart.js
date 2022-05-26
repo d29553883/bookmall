@@ -82,7 +82,38 @@ function cartInfo() {
             cartItemBox.appendChild(cart_price);
             cartItemBox.appendChild(delete_button);
             cart_items.appendChild(cartItemBox);
+            let cart_total_price =
+              document.getElementsByClassName("cart-total-price")[0];
+            let sum = 0;
+            for (let x = 0; x < price_list.length; x++) {
+              sum += price_list[x];
+            }
+            cart_total_price.innerText = sum + "元";
           }
+        } else {
+          let container = document.getElementsByClassName("container")[0];
+          container.innerHTML = "";
+          let cartEmpty = document.createElement("div");
+          cartEmpty.className = "cartEmpty";
+          let img = document.createElement("img");
+          img.src = "../static/Cart illustartion.svg";
+          let cartTextBox = document.createElement("div");
+          cartTextBox.id = "cartTextBox";
+          let cartText = document.createTextNode("你的購物車沒有商品");
+          cartEmpty.appendChild(img);
+          cartTextBox.appendChild(cartText);
+          container.appendChild(cartEmpty);
+          cartEmpty.appendChild(cartTextBox);
+          let backBtn = document.createElement("button");
+          backBtn.id = "backBtn";
+          let backBtntextBox = document.createElement("tag");
+          let backBtntext = document.createTextNode("現在就去逛逛吧 !");
+          backBtntextBox.appendChild(backBtntext);
+          backBtn.appendChild(backBtntextBox);
+          cartEmpty.appendChild(backBtn);
+          backBtn.addEventListener("click", function () {
+            location.assign("/");
+          });
         }
       } else {
         location.assign("/");
@@ -108,7 +139,240 @@ function deleteBook(datanumber) {
     })
     .then((result) => {
       if (result.ok === true) {
-        deleteButtonIcon.parentElement.parentElement.innerHTML = "";
+        let outBox = deleteButtonIcon.parentElement.parentElement;
+        // deleteButtonIcon.parentElement.parentElement.innerHTML = "";
+        outBox.innerHTML = "";
+        let price = document.getElementsByClassName("cart-total-price")[0];
+        let pricecount = Number(price.innerText.replace("元", ""));
+        price.innerText = String(pricecount - Number(result.price)) + " 元 ";
+        if (outBox.innerHTML === "") {
+          let container = document.getElementsByClassName("container")[0];
+          container.innerHTML = "";
+          let cartEmpty = document.createElement("div");
+          cartEmpty.className = "cartEmpty";
+          let img = document.createElement("img");
+          img.src = "../static/Cart illustartion.svg";
+          let cartTextBox = document.createElement("div");
+          cartTextBox.id = "cartTextBox";
+          let cartText = document.createTextNode("你的購物車沒有商品");
+          cartEmpty.appendChild(img);
+          cartTextBox.appendChild(cartText);
+          container.appendChild(cartEmpty);
+          cartEmpty.appendChild(cartTextBox);
+          let backBtn = document.createElement("button");
+          backBtn.id = "backBtn";
+          let backBtntextBox = document.createElement("tag");
+          let backBtntext = document.createTextNode("現在就去逛逛吧 !");
+          backBtntextBox.appendChild(backBtntext);
+          backBtn.appendChild(backBtntextBox);
+          cartEmpty.appendChild(backBtn);
+        }
       }
     });
+}
+
+TPDirect.setupSDK(
+  123992,
+  "app_XpdqJEzCUtW3DqRCgzOrLSNfYRFz3ae3Zu6pxTdyp1qWYKOqWbuvN1lU4VFz",
+  "sandbox"
+);
+TPDirect.card.setup({
+  // Display ccv field
+  fields: {
+    number: {
+      // css selector
+      element: "#card-number",
+      placeholder: "**** **** **** ****",
+    },
+    expirationDate: {
+      // DOM object
+      element: document.getElementById("card-expiration-date"),
+      placeholder: "MM / YY",
+    },
+    ccv: {
+      element: "#card-ccv",
+      placeholder: "ccv",
+    },
+  },
+  styles: {
+    // Style all elements
+    input: {
+      color: "gray",
+      backgroundcolor: "#BCC3D1",
+    },
+    // Styling ccv field
+    "input.ccv": {
+      "font-size": "16px",
+    },
+    // Styling expiration-date field
+    "input.expiration-date": {
+      "font-size": "16px",
+    },
+    // Styling card-number field
+    "input.card-number": {
+      "font-size": "16px",
+    },
+    // style focus state
+    ":focus": {
+      color: "black",
+    },
+    // style valid state
+    ".valid": {
+      color: "green",
+    },
+    // style invalid state
+    ".invalid": {
+      color: "red",
+    },
+    // Media queries
+    // Note that these apply to the iframe, not the root window.
+    "@media screen and (max-width: 400px)": {
+      input: {
+        color: "orange",
+      },
+    },
+  },
+});
+let submitButton = document.getElementById("confirmBtn");
+TPDirect.card.onUpdate(function (update) {
+  // update.canGetPrime === true
+  // --> you can call TPDirect.card.getPrime()
+  if (update.canGetPrime) {
+    // Enable submit Button to get prime.
+    let submitButton = document.getElementById("confirmBtn");
+    submitButton.removeAttribute("disabled");
+  } else {
+    // Disable submit Button to get prime.
+    let submitButton = document.getElementById("confirmBtn");
+    submitButton.setAttribute("disabled", true);
+  }
+  // cardTypes = ['mastercard', 'visa', 'jcb', 'amex', 'unionpay','unknown']
+  if (update.cardType === "visa") {
+    // Handle card type visa.
+  }
+  // number 欄位是錯誤的
+  if (update.status.number === 2) {
+    setNumberFormGroupToError(".card-number-group");
+  } else if (update.status.number === 0) {
+    setNumberFormGroupToSuccess(".card-number-group");
+  } else {
+    setNumberFormGroupToNormal(".card-number-group");
+  }
+
+  if (update.status.expiry === 2) {
+    setNumberFormGroupToError(".expiration-date-group");
+  } else if (update.status.expiry === 0) {
+    setNumberFormGroupToSuccess(".expiration-date-group");
+  } else {
+    setNumberFormGroupToNormal(".expiration-date-group");
+  }
+
+  if (update.status.cvc === 2) {
+    setNumberFormGroupToError(".cvc-group");
+  } else if (update.status.cvc === 0) {
+    setNumberFormGroupToSuccess(".cvc-group");
+  } else {
+    setNumberFormGroupToNormal(".cvc-group");
+  }
+});
+
+submitButton.addEventListener("click", function () {
+  onSubmit();
+});
+
+function onSubmit(event) {
+  // event.preventDefault();
+  // 取得 TapPay Fields 的 status
+  let phoneValue = document.getElementById("cellphone").value;
+  const tappayStatus = TPDirect.card.getTappayFieldsStatus();
+  // 確認是否可以 getPrime
+  if (tappayStatus.canGetPrime === false || phoneValue === "") {
+    document.getElementById("checkinfoBox").innerHTML = "";
+    let checkinfoBox = document.getElementById("checkinfoBox");
+    let checkinfo = document.createElement("div");
+    checkinfo.id = "checkinfo";
+    let checkinfo_text = document.createTextNode("請確實填寫聯絡資訊與卡號");
+    checkinfo.appendChild(checkinfo_text);
+    checkinfoBox.appendChild(checkinfo);
+    return;
+  } else {
+    // Get prime
+    TPDirect.card.getPrime((result) => {
+      if (result.status !== 0) {
+        return;
+      }
+      let data = {
+        prime: result.card.prime,
+        username: document.getElementById("name").value,
+        email: document.getElementById("email").value,
+        phone: phoneValue,
+      };
+      fetch("/api/orders", {
+        method: "POST",
+        body: JSON.stringify(data),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      })
+        .then((response) => response.json())
+        .then((res) => {
+          console.log(res);
+          if (res.data !== "") {
+            if (res.data.payment.status === 0) {
+              deleteBook();
+              let orderNumber = res.data.number;
+              location.assign("/thankyou?number=" + orderNumber);
+            } else {
+              document.getElementById("checkinfoBox").innerHTML = "";
+              let checkinfoBox = document.getElementById("checkinfoBox");
+              let checkinfo = document.createElement("div");
+              checkinfo.id = "checkinfo";
+              let checkinfo_text = document.createTextNode("付款失敗");
+              checkinfo.appendChild(checkinfo_text);
+              checkinfoBox.appendChild(checkinfo);
+            }
+          } else {
+            document.getElementById("checkinfoBox").innerHTML = "";
+            let checkinfoBox = document.getElementById("checkinfoBox");
+            let checkinfo = document.createElement("div");
+            checkinfo.id = "checkinfo";
+            let checkinfo_text = document.createTextNode("付款失敗");
+            checkinfo.appendChild(checkinfo_text);
+            checkinfoBox.appendChild(checkinfo);
+          }
+        });
+
+      // send prime to your server, to pay with Pay by Prime API .
+    });
+  }
+}
+function setNumberFormGroupToError(selector) {
+  $(selector).addClass("has-error");
+  $(selector).removeClass("has-success");
+}
+
+function setNumberFormGroupToSuccess(selector) {
+  $(selector).removeClass("has-error");
+  $(selector).addClass("has-success");
+}
+
+function setNumberFormGroupToNormal(selector) {
+  $(selector).removeClass("has-error");
+  $(selector).removeClass("has-success");
+}
+
+function forceBlurIos() {
+  if (!isIos()) {
+    return;
+  }
+  var input = document.createElement("input");
+  input.setAttribute("type", "text");
+  // Insert to active element to ensure scroll lands somewhere relevant
+  document.activeElement.prepend(input);
+  input.focus();
+  input.parentNode.removeChild(input);
+}
+
+function isIos() {
+  return /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
 }

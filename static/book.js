@@ -40,9 +40,11 @@ function memberstatus() {
       if (res.data !== null) {
         document.getElementById("logout_button").style.display = "flex";
         document.getElementById("login_button").style.display = "none";
+        document.getElementById("account_button").style.display = "flex";
       } else {
         document.getElementById("logout_button").style.display = "none";
         document.getElementById("login_button").style.display = "flex";
+        document.getElementById("account_button").style.display = "none";
       }
     });
 }

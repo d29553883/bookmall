@@ -206,6 +206,11 @@ a {
   color: #666666;
 }
 
+#account_button{
+  cursor: pointer;
+  display: none;
+}
+
 #reservation_button {
   text-decoration: none;
   color: #666666;
@@ -340,4 +345,217 @@ footer {
   height: 30px;
   margin-top: 5px; 
   cursor: pointer;
+}
+.cartEmpty{
+  display: flex;
+  width: 400px;
+  margin: auto;
+  margin-top: 50px;
+  justify-content: center;
+  flex-direction: column;
+}
+#cartTextBox{
+  display: flex;
+  width: 400px;
+  justify-content: center;
+  font-size: 25px;
+  color: #666666;
+  margin-top: 20px;
+
+}
+
+
+
+#backBtn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 154px;
+  height: 36px;
+  font-size: 19px;
+  border: none;
+  /* margin-left: 20px; */
+  color: #ffffff;
+  background-color: #B4D51E;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: 0.4s;
+  opacity: 1;
+  margin: auto;
+  margin-top: 30px;
+}
+#backBtn:hover{
+  opacity: 0.7;
+}
+#backBtnBtntext {
+  margin-bottom: 3px;
+}
+
+
+
+#section2 {
+  display: flex;
+  justify-content: center;
+  max-width: 1000px;
+  width: 100%;
+  height: 347px;
+  margin: auto;
+  font-size: 16px;
+  color: #666666;
+}
+#content {
+  display: flex;
+  margin-top: 44px;
+  margin-left: 0px;
+  flex-direction: column;
+}
+#payImgBox{
+  display: flex;
+  justify-content: center;
+}
+
+#info_title {
+  display: flex;
+  justify-content: center;
+  font-weight: bold;
+  font-size: 20px;
+  height: 16px;
+  margin-bottom: 9px;
+}
+#section3 {
+  display: flex;
+  justify-content: center;
+  max-width: 1000px;
+  width: 100%;
+  height: 268px;
+  margin: auto;
+  font-size: 16px;
+  color: #666666;
+}
+#creditcard {
+  display: flex;
+  font-weight: bold;
+  height: 16px;
+  margin-bottom: 14px;
+}
+input {
+  width: 180px;
+  height: 18px;
+  margin-top: 15px;
+  border-radius: 4px;
+  padding: 10px;
+  border: 1px solid #e8e8e8;
+}
+
+.tpfield {
+  height: 18px;
+  width: 180px;
+  border-radius: 4px;
+  margin-top: 10px;
+  margin-left: 5px;
+  border: 1px solid #e8e8e8;
+  padding: 10px;
+}
+label{
+  display: flex;
+}
+.form-group{
+  display: flex;
+  align-items: center;
+}
+
+#line {
+  width: 100%;
+  justify-content: center;
+  max-width: 1200px;
+  height: 1px;
+  background-color: #e8e8e8;
+  margin: auto;
+}
+#section3 {
+  display: flex;
+  justify-content:center;
+  max-width: 1000px;
+  margin-top: 20px;
+  width: 100%;
+  height: 268px;
+  margin: auto;
+  font-size: 16px;
+}
+
+#checkinfoBox{
+  display: flex;
+  justify-content: end;
+  max-width: 1000px;
+  width: 100%;
+  height: 43px;
+  margin: auto;
+}
+#checkinfo {
+  display: flex;
+  font-size: 16px;
+  margin-right: 10px;
+  margin-bottom: 5px;
+  height: 14px;
+  font-weight: bold;
+  color: #e50000;
+}
+#confirm {
+  display: flex;
+  align-items: center;
+  max-width: 1000px;
+  width: 100%;
+  height: 136px;
+  margin: auto;
+  flex-direction: column;
+}
+
+#totalcost {
+  display: flex;
+  font-size: 16px;
+  margin-right: 10px;
+  margin-bottom: 25px;
+  height: 14px;
+  font-weight: bold;
+  color: #666666;
+}
+
+#confirmBtn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 173px;
+  height: 36px;
+  font-size: 19px;
+  border: none;
+  color: #ffffff;
+  background-color: #448899;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: 0.4s;
+  opacity: 1;
+}
+#confirmBtn:hover{
+  opacity: 0.7;
+}
+#confirmBtntext {
+  display: flex;
+  margin-bottom: 5px;
+}
+
+.tappay-field-focus {
+  border-color: #66afe9;
+  outline: 0;
+  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075), 0 0 8px rgba(102, 175, 233, .6);
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075), 0 0 8px rgba(102, 175, 233, .6);
+}
+.has-error .tappay-field-focus {
+  border-color: #843534;
+  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075), 0 0 6px #ce8483;
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075), 0 0 6px #ce8483;
+}
+.has-success .tappay-field-focus {
+  border-color: #2b542c;
+  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075), 0 0 6px #67b168;
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075), 0 0 6px #67b168;
 }

@@ -301,12 +301,18 @@ function searchdata() {
         }
       } else {
         let oldpic = document.getElementById("section_warp");
-        while (oldpic.firstChild) {
-          oldpic.removeChild(oldpic.firstChild);
-        }
-        let error = document.getElementsByClassName("error")[0];
-        let noresult = document.createTextNode("查無此資料");
-        error.appendChild(noresult);
+        oldpic.innerHTML = "";
+        let error = document.createElement("div");
+        error.className = "error";
+        let img = document.createElement("img");
+        img.src = "../static/Not Found illustration.svg";
+        let cartTextBox = document.createElement("div");
+        cartTextBox.id = "cartTextBox";
+        let noresult = document.createTextNode("查無此商品");
+        cartTextBox.appendChild(noresult);
+        error.appendChild(img);
+        error.appendChild(cartTextBox);
+        oldpic.appendChild(error);
       }
     });
 }
@@ -320,9 +326,11 @@ function memberstatus() {
       if (res.data !== null) {
         document.getElementById("logout_button").style.display = "flex";
         document.getElementById("login_button").style.display = "none";
+        document.getElementById("account_button").style.display = "flex";
       } else {
         document.getElementById("logout_button").style.display = "none";
         document.getElementById("login_button").style.display = "flex";
+        document.getElementById("account_button").style.display = "none";
       }
     });
 }
@@ -354,6 +362,24 @@ document
         console.log(data);
         if (data !== null) {
           location.assign("/addCart");
+        } else {
+          document.querySelector(".popup").style.display = "flex";
+        }
+      });
+  });
+
+document
+  .getElementById("account_button")
+  .addEventListener("click", function () {
+    fetch("/api/user")
+      .then(function (response) {
+        return response.json();
+      })
+      .then((result) => {
+        let data = result.data;
+        console.log(data);
+        if (data !== null) {
+          location.assign("/account");
         } else {
           document.querySelector(".popup").style.display = "flex";
         }
