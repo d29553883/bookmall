@@ -15,17 +15,58 @@ function memberstatus() {
 }
 memberstatus();
 
+function userinfo() {
+  fetch("/api/user")
+    .then(function (response) {
+      return response.json();
+    })
+    .then((result) => {
+      if (result.data !== null) {
+        let data = result.data;
+        let username = document.getElementById("name");
+        username.value = data.name;
+        let email = document.getElementById("email");
+        email.value = data.email;
+      }
+    });
+}
+userinfo();
+
+function cleanCart() {
+  let container = document.getElementsByClassName("container")[0];
+  container.innerHTML = "";
+  let cartEmpty = document.createElement("div");
+  cartEmpty.className = "cartEmpty";
+  let img = document.createElement("img");
+  img.src = "../static/Cart illustartion.svg";
+  let cartTextBox = document.createElement("div");
+  cartTextBox.id = "cartTextBox";
+  let cartText = document.createTextNode("你的購物車沒有商品");
+  cartEmpty.appendChild(img);
+  cartTextBox.appendChild(cartText);
+  container.appendChild(cartEmpty);
+  cartEmpty.appendChild(cartTextBox);
+  let backBtn = document.createElement("button");
+  backBtn.id = "backBtn";
+  let backBtntextBox = document.createElement("tag");
+  let backBtntext = document.createTextNode("現在就去逛逛吧 !");
+  backBtntextBox.appendChild(backBtntext);
+  backBtn.appendChild(backBtntextBox);
+  cartEmpty.appendChild(backBtn);
+  backBtn.addEventListener("click", function () {
+    location.assign("/");
+  });
+}
+
 function cartInfo() {
   fetch("/api/addCart")
     .then(function (response) {
       return response.json();
     })
     .then((result) => {
-      console.log(result);
       if (result.error !== true) {
         if (result.data !== null) {
           let data = result.data;
-          console.log(data);
           let name_list = [];
           let author_list = [];
           let id_list = [];
@@ -91,29 +132,7 @@ function cartInfo() {
             cart_total_price.innerText = sum + "元";
           }
         } else {
-          let container = document.getElementsByClassName("container")[0];
-          container.innerHTML = "";
-          let cartEmpty = document.createElement("div");
-          cartEmpty.className = "cartEmpty";
-          let img = document.createElement("img");
-          img.src = "../static/Cart illustartion.svg";
-          let cartTextBox = document.createElement("div");
-          cartTextBox.id = "cartTextBox";
-          let cartText = document.createTextNode("你的購物車沒有商品");
-          cartEmpty.appendChild(img);
-          cartTextBox.appendChild(cartText);
-          container.appendChild(cartEmpty);
-          cartEmpty.appendChild(cartTextBox);
-          let backBtn = document.createElement("button");
-          backBtn.id = "backBtn";
-          let backBtntextBox = document.createElement("tag");
-          let backBtntext = document.createTextNode("現在就去逛逛吧 !");
-          backBtntextBox.appendChild(backBtntext);
-          backBtn.appendChild(backBtntextBox);
-          cartEmpty.appendChild(backBtn);
-          backBtn.addEventListener("click", function () {
-            location.assign("/");
-          });
+          cleanCart();
         }
       } else {
         location.assign("/");
@@ -139,34 +158,16 @@ function deleteBook(datanumber) {
     })
     .then((result) => {
       if (result.ok === true) {
+        let cart_items = document.getElementsByClassName("cart-items")[0];
+        console.log(cart_items.length);
         let outBox = deleteButtonIcon.parentElement.parentElement;
         // deleteButtonIcon.parentElement.parentElement.innerHTML = "";
         outBox.innerHTML = "";
         let price = document.getElementsByClassName("cart-total-price")[0];
         let pricecount = Number(price.innerText.replace("元", ""));
         price.innerText = String(pricecount - Number(result.price)) + " 元 ";
-        if (outBox.innerHTML === "") {
-          let container = document.getElementsByClassName("container")[0];
-          container.innerHTML = "";
-          let cartEmpty = document.createElement("div");
-          cartEmpty.className = "cartEmpty";
-          let img = document.createElement("img");
-          img.src = "../static/Cart illustartion.svg";
-          let cartTextBox = document.createElement("div");
-          cartTextBox.id = "cartTextBox";
-          let cartText = document.createTextNode("你的購物車沒有商品");
-          cartEmpty.appendChild(img);
-          cartTextBox.appendChild(cartText);
-          container.appendChild(cartEmpty);
-          cartEmpty.appendChild(cartTextBox);
-          let backBtn = document.createElement("button");
-          backBtn.id = "backBtn";
-          let backBtntextBox = document.createElement("tag");
-          let backBtntext = document.createTextNode("現在就去逛逛吧 !");
-          backBtntextBox.appendChild(backBtntext);
-          backBtn.appendChild(backBtntextBox);
-          cartEmpty.appendChild(backBtn);
-        }
+        console.log(outBox);
+        console.log(outBox.innerHTML);
       }
     });
 }
@@ -284,9 +285,14 @@ function onSubmit(event) {
   // event.preventDefault();
   // 取得 TapPay Fields 的 status
   let phoneValue = document.getElementById("cellphone").value;
+  let addressValue = document.getElementById("address").value;
   const tappayStatus = TPDirect.card.getTappayFieldsStatus();
   // 確認是否可以 getPrime
-  if (tappayStatus.canGetPrime === false || phoneValue === "") {
+  if (
+    tappayStatus.canGetPrime === false ||
+    phoneValue === "" ||
+    addressValue === ""
+  ) {
     document.getElementById("checkinfoBox").innerHTML = "";
     let checkinfoBox = document.getElementById("checkinfoBox");
     let checkinfo = document.createElement("div");
@@ -306,6 +312,7 @@ function onSubmit(event) {
         username: document.getElementById("name").value,
         email: document.getElementById("email").value,
         phone: phoneValue,
+        address: addressValue,
       };
       fetch("/api/orders", {
         method: "POST",
@@ -319,7 +326,7 @@ function onSubmit(event) {
           console.log(res);
           if (res.data !== "") {
             if (res.data.payment.status === 0) {
-              deleteBook();
+              cleanCart();
               let orderNumber = res.data.number;
               location.assign("/thankyou?number=" + orderNumber);
             } else {

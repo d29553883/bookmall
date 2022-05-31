@@ -105,3 +105,76 @@ document
         }
       });
   });
+
+let board = document.querySelector("#board");
+
+function render(message, imageURL, username) {
+  // render 留言
+  let board = document.getElementById("board");
+  let recommentBox = document.createElement("div");
+  recommentBox.id = "recommentBox";
+
+  let pic_name = document.createElement("div");
+  pic_name.id = "pic_name";
+
+  let name = document.createElement("div");
+  name.id = "name";
+  let nameText = document.createTextNode(username);
+  name.appendChild(nameText);
+  let profile_pic_div = document.createElement("div");
+  profile_pic_div.className = "profile-pic-div";
+  let photo = document.createElement("img");
+  photo.src = imageURL;
+  profile_pic_div.appendChild(photo);
+  pic_name.appendChild(name);
+  pic_name.appendChild(profile_pic_div);
+  let recommentTextBox = document.createElement("div");
+  recommentTextBox.id = "recommentTextBox";
+  let recommentText = document.createTextNode(message);
+  recommentTextBox.appendChild(recommentText);
+  recommentBox.appendChild(pic_name);
+  recommentBox.appendChild(recommentTextBox);
+  board.appendChild(recommentBox);
+}
+
+window.addEventListener("load", () => {
+  id = String(window.location.href);
+  id = id.substr(-3, 3);
+  let src = "/api/book/" + id;
+  fetch(src, {
+    method: "GET",
+  })
+    .then((res) => res.json())
+    .then((data) => {
+      console.log(data.data);
+      data.data.forEach((data) =>
+        render(data.message, data.image, data.username)
+      );
+    });
+});
+
+let messageData = new FormData();
+
+document.getElementById("postBtn").addEventListener("click", function () {
+  let message = document.getElementById("recomment").value;
+  if (message !== "") {
+    id = String(window.location.href);
+    id = id.substr(-3, 3);
+    messageData.append("message", message);
+    messageData.append("bookid", id);
+    // 帶資料給後端
+    fetch("/api/recomment", {
+      method: "POST",
+      body: messageData,
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        // console.log(`${data.ok}`);
+        document.getElementById("recomment").value = "";
+        window.location.reload();
+      })
+      .catch((err) => console.log("出錯了...", err));
+  } else {
+    alert("請輸入留言");
+  }
+});

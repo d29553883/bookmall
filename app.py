@@ -1,6 +1,7 @@
 from flask import *
 # from flask_cors import CORS
 # import mysql.connector
+import boto3
 import decimal
 import ast
 import json
@@ -8,6 +9,7 @@ import requests
 from cnxpool import cnxpool
 from datetime import datetime 
 from sqlalchemy import true
+from werkzeug.utils import secure_filename
 import os
 from dotenv import load_dotenv
 
@@ -18,7 +20,14 @@ app=Flask(__name__)
 app.config["JSON_AS_ASCII"]=False
 app.config["TEMPLATES_AUTO_RELOAD"]=True
 app.secret_key='yyfgswetjhj'
+ACCESS_KEY_ID = os.getenv("ACCESS_KEY_ID")
+ACCESS_SECRET_KEY = os.getenv("ACCESS_SECRET_KEY")
+s3 = boto3.client('s3',
+                    aws_access_key_id = ACCESS_KEY_ID,
+                    aws_secret_access_key = ACCESS_SECRET_KEY,
+                     )
 
+BUCKET_NAME='aws-test-learn-s3'
 
 @app.route('/')
 def index():
@@ -31,7 +40,10 @@ def booking():
 	return render_template("addCart.html")
 @app.route("/account")
 def account():
-	return render_template("account.html")	
+	return render_template("account.html")
+@app.route("/thankyou")
+def thankyou():
+	return render_template("thankyou.html")		
 @app.route("/api/books")
 def books():
   keyword = request.args.get("keyword")
@@ -66,32 +78,38 @@ def books():
 
 @app.route("/api/book/<bookId>")
 def searchid(bookId):
-  try:
-    cnx=cnxpool.get_connection()
-    mycursor=cnx.cursor(buffered = True, dictionary = True)
-    sql ="SELECT bookid, name, category, author, description, image, price, view FROM books WHERE bookid = %s"
-    i = int(bookId)
-    adr = (i,)
-    mycursor.execute(sql,adr)
-    result = mycursor.fetchall()
-    if result != []:
-      rl = result[0]
-      return {
-        "bookid":rl["bookid"],
-        "name":rl["name"],
-        "category":rl["category"],
-        "author":rl["author"],
-        "description":rl["description"],
-        "image":rl["image"],
-        "price":rl["price"],
-        "view":rl["view"]
-      }, 200 
+	try:
+		cnx=cnxpool.get_connection()
+		mycursor=cnx.cursor(buffered = True, dictionary = True)
+		sql ="SELECT bookid, name, category, author, description, image, price, view FROM books WHERE bookid = %s"
+		i = int(bookId)
+		adr = (i,)
+		mycursor.execute(sql,adr)
+		result = mycursor.fetchall()
+		mycursor.execute("SELECT recomment.message,recomment.username,account.image FROM recomment join account on recomment.email = account.email where recomment.bookid =%s" , (bookId,))
+		result2 = mycursor.fetchall()
+		print(result2)
+		if result != []:
+			rl = result[0]
+			return {
+				"bookid":rl["bookid"],
+				"name":rl["name"],
+				"category":rl["category"],
+				"author":rl["author"],
+				"description":rl["description"],
+				"image":rl["image"],
+				"price":rl["price"],
+				"view":rl["view"],
+				"data":result2
+			}, 200 
 
-  except:
-    return {"error": True, "message": "伺服器內部錯誤"}, 500
-  finally:
-    mycursor.close()
-    cnx.close()
+	except:
+		return {"error": True, "message": "伺服器內部錯誤"}, 500
+
+	# finally:
+	# 		mycursor.close()
+	# 		cnx.close()
+
   
 @app.route("/api/user")
 def memberinfo():
@@ -304,7 +322,6 @@ def deleteBook():
 			adr2 = (deleteBookId,)
 			mycursor.execute(sql2, adr2)
 			myresult = mycursor.fetchone()
-
 			sql = "DELETE FROM cart where id = %s"
 			adr = (deleteBookId,)
 			mycursor.execute(sql, adr)
@@ -323,6 +340,252 @@ def deleteBook():
 			cnx.rollback()
 		cnx.close()		
 
+
+
+@app.route('/api/accountPic' ,methods=['POST'])
+def update_pic():
+	img = request.files['file']
+	print(img)
+	email = session["e_mail"]
+	print('信箱', email)  
+	if(len(request.files) != 0):
+		img = request.files['file']
+		filename = secure_filename(img.filename)
+		print('圖檔',img)
+		print('圖檔名稱',filename)
+	try:
+		s3.upload_fileobj(img,BUCKET_NAME,filename)
+	except:
+		return {"error": True, "message": "伺服器內部錯誤"}, 500
+	try:
+		cnx = cnxpool.get_connection()
+		mycursor=cnx.cursor(dictionary = True)
+		sql = ("INSERT INTO account (email, image)"
+		"VALUES (%s, %s) ON duplicate KEY UPDATE"
+		"`email` =VALUES(`email`),`image`=VALUES(`image`)")
+		adr = (email, "https://d1kfzndf9j846w.cloudfront.net/"+filename)
+		mycursor.execute(sql,adr)
+		cnx.commit()
+	except:
+		cnx.rollback()
+		return {"error": True, "message": "伺服器內部錯誤"}, 500
+	finally:
+		mycursor.close()
+		cnx.close()
+				
+	return {'ok': True}, 200
+
+@app.route('/api/accountPic', methods=['GET'])
+def get_pic():
+		try:
+				cnx = cnxpool.get_connection()
+				cursor = cnx.cursor(buffered = True, dictionary = True)
+				email = session["e_mail"]
+				name = session["name"]
+				sql = ("SELECT image FROM account WHERE email = %s")
+				adr = (email,)
+				cursor.execute(sql,adr)
+				result = cursor.fetchall()
+
+		except:
+				return {"error": True, "message": "伺服器內部錯誤"}, 500
+		finally:
+				cursor.close()
+				cnx.close()
+
+		return {'data': result,'name':name,'email':email}, 200
+	
+
+
+@app.route("/api/orders",methods=["POST"])
+def createBook():
+	try:
+		if session != {}:
+			cnx=cnxpool.get_connection()
+			mycursor=cnx.cursor()			
+			partnerKey = os.getenv("PARTNERKEY")
+			req = request.get_json()
+			prime = req["prime"]
+			email = req["email"]
+			phone = req["phone"]
+			address = req["address"]
+			sql = "SELECT name,author,price from cart WHERE email = %s" 
+			adr = (email,)
+			mycursor.execute(sql, adr)
+			myresult = mycursor.fetchall()
+			pricetotal = 0
+			for i in myresult:	
+				price	= i[2]
+				pricetotal += price
+			number = datetime.now().strftime('%Y%m%d%H%M%S')
+			username = req["username"]
+			if phone !="":
+				header = {
+					"content-type": "application/json",
+					"x-api-key": partnerKey
+				}
+				my_data = {
+						"prime": prime,
+						"partner_key": partnerKey,
+						"merchant_id": "d29553883_CTBC",
+						"details":"TapPay Test",
+						"amount": pricetotal,
+						"cardholder": {
+							"phone_number": phone,
+							"name": username,
+							"email": email,
+						},
+						"remember": True
+					}
+				response = requests.post('https://sandbox.tappaysdk.com/tpc/payment/pay-by-prime', json = my_data, headers=header)
+				data = response.json()
+				status = data["status"]
+				if status == 0:
+					for i in myresult:	
+						name = i[0]
+						author = i[1]
+						price	= i[2]
+						sql2 = ("INSERT INTO orderhistory(number,name,author,price,username,email,phone,address,status)" 
+						" VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s)")		
+						adr2 = (number,name,author,price,username,email,phone,address,status)
+						mycursor.execute(sql2,adr2)
+						cnx.commit()
+					return jsonify({
+						"data": {
+							"number": number,
+							"payment": {
+							 "status":status,
+							 "message": "付款成功"
+						}
+						}
+					})
+				else:
+					sql2 = ("INSERT INTO orderhistory(number,name,author,price,username,email,phone,address,status)" 
+					" VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s)")		
+					adr2 = (number,name,author,price,username,email,phone,address,status)
+					mycursor.execute(sql2,adr2)
+					cnx.commit()
+					return jsonify({
+						"data": {
+							"number": number,
+							"payment": {
+							 "status":status,
+							 "message": "付款失敗"
+						}
+						}
+					})					
+			else:
+				return jsonify({
+					"error": True,
+					"message": "建立失敗，資料沒輸入"
+				}),400				
+		else:
+			return jsonify({
+				"error": True,
+				"message": "未登入系統，拒絕存取"
+			}),403
+	except:
+		return jsonify({
+			"error": True,
+			"message": "伺服器內部錯誤"
+		}),500	
+	finally:
+		if cnx.in_transaction:
+			cnx.rollback()
+		cnx.close()
+
+
+@app.route("/api/orders/<orderNumber>")
+def thankyouPage(orderNumber):
+	try:
+		if session != {}:
+			cnx=cnxpool.get_connection()
+			mycursor=cnx.cursor()
+			sql = "SELECT number FROM orderhistory WHERE number = %s" 
+			adr = (orderNumber,)
+			mycursor.execute(sql, adr)
+			myresult = mycursor.fetchall()
+			x = myresult[0]
+			x.__str__()
+			number = x[0]
+			return jsonify({
+				"data":{"number":number}
+			})
+		else:
+				return jsonify({
+					"error": True,
+					"message": "未登入系統，拒絕存取"
+				}),403
+	finally:
+		if cnx.in_transaction:
+			cnx.rollback()
+		cnx.close()
+
+
+@app.route('/api/hidtory', methods=['GET'])
+def history():
+	if session != {}:
+		cnx=cnxpool.get_connection()
+		mycursor=cnx.cursor(buffered = True, dictionary = True)
+		email = session["e_mail"]
+		sql = "SELECT number,name,author,price FROM orderhistory WHERE email = %s" 
+		adr = (email,)
+		mycursor.execute(sql, adr)
+		myresult = mycursor.fetchall()
+		print(myresult)
+		print(session)
+		return jsonify({
+			"data":myresult
+		})
+
+
+@app.route('/api/recomment' ,methods=['POST'])
+def input_message():
+	x = request.form
+	print(x)
+	bookid = request.form['bookid']
+	message = request.form['message']	
+	print('留言', message) 
+	print('書本', bookid) 
+	try:
+		if session != {}:
+			username = session["name"]
+			email = session["e_mail"]	
+			cnx = cnxpool.get_connection()
+			mycursor=cnx.cursor(dictionary = True)
+			mycursor.execute("INSERT INTO recomment (bookid, username, email, message) VALUES (%s,%s,%s,%s)", (bookid,username,email,message))
+		else:
+				return jsonify({
+					"error": True,
+					"message": "未登入系統，拒絕存取"
+				}),403			
+	except:
+		cnx.rollback()
+		return {"error": True, "message": "伺服器內部錯誤"}, 500
+	finally:
+		mycursor.close()
+		cnx.commit()
+		cnx.close()
+				
+	return {'ok': True}, 200
+
+# @app.route('/api/recomment', methods=['GET'])
+# def get_message():
+# 		try:
+# 				x = request.form
+# 				print(x)
+# 				cnx = cnxpool.get_connection()
+# 				cursor = cnx.cursor(buffered = True, dictionary = True)
+# 				cursor.execute("SELECT recomment.message,recomment.username,account.image FROM recomment join account on recomment.email = account.email where recomment.bookid =%s")
+# 				result = cursor.fetchall()
+# 				print(result)
+# 		except:
+# 				return {"error": True, "message": "伺服器內部錯誤"}, 500
+# 		finally:
+# 				cursor.close()
+# 				cnx.close()
+
+# 		return {'data': result}, 200	
 
 
 # app.run(port=3000,debug=True)

@@ -485,7 +485,7 @@ label{
 
 #checkinfoBox{
   display: flex;
-  justify-content: end;
+  justify-content: center;
   max-width: 1000px;
   width: 100%;
   height: 43px;
@@ -529,7 +529,7 @@ label{
   font-size: 19px;
   border: none;
   color: #ffffff;
-  background-color: #448899;
+  background-color: #7e9515;
   border-radius: 4px;
   cursor: pointer;
   transition: 0.4s;

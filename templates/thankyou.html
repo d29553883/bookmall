@@ -4,8 +4,8 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>accountPage</title>
-    <link rel="stylesheet" href={{ url_for('static', filename='account.css')
+    <title>thankyouPage</title>
+    <link rel="stylesheet" href={{ url_for('static', filename='thankyou.css')
     }}/>
   </head>
   <body>
@@ -106,20 +106,16 @@
         </div>
       </div>
     </div>
-    <div id="accountInfoBox">
-      <div class="profile-pic-div">
-        <img src="../static/test.jpg" id="photo" />
-        <input type="file" id="file" accept="image/*" />
-        <label for="file" id="uploadBtn">Choose Photo</label>
+    <div id="booktitlebox">
+      <div id="tickBox">
+        <img src="../static/check_sign_icon.png" />
       </div>
-      <div id="accountInfo">
-        <div id="accountName"></div>
-        <div id="accountEmail"></div>
+      <div id="booktitle">
+        <a>已經收到您的訂單</a>
+        <a>你的訂單編號如下</a>
       </div>
-    </div>
-
-    <div id="historyTitleBox">
-      <div id="historyTitle">歷史訂單</div>
+      <div id="numberBox"></div>
+      <div id="remindnumber">請記住此編號，或到會員中心查詢歷史訂單</div>
     </div>
 
     <footer>
@@ -129,6 +125,6 @@
     </footer>
 
     <script type="text/javascript" src="../static/member.js"></script>
-    <script type="text/javascript" src="../static/account.js"></script>
+    <script type="text/javascript" src="../static/thankyou.js"></script>
   </body>
 </html>

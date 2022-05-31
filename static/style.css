@@ -57,7 +57,7 @@ nav {
 input {
   width: 400px;
   height: 42px;
-  border-radius: 5px 0 0 5px;
+  border-radius: 5px 5px 5px 5px;
   padding-left: 13px;
 }
 a {
@@ -261,8 +261,6 @@ a {
   margin: auto;
   margin-bottom: 55px;
   border-radius: 10%;
-  /* background-image: linear-gradient(to right bottom, #aaddee, #66aabb); */
-  /* background-color: skyblue; */
   overflow: cover;
 }
 
