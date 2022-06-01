@@ -157,24 +157,28 @@ let messageData = new FormData();
 
 document.getElementById("postBtn").addEventListener("click", function () {
   let message = document.getElementById("recomment").value;
-  if (message !== "") {
-    id = String(window.location.href);
-    id = id.substr(-3, 3);
-    messageData.append("message", message);
-    messageData.append("bookid", id);
-    // 帶資料給後端
-    fetch("/api/recomment", {
-      method: "POST",
-      body: messageData,
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        // console.log(`${data.ok}`);
-        document.getElementById("recomment").value = "";
-        window.location.reload();
+  if (document.querySelector("#account_button").style.display !== "none") {
+    if (message !== "") {
+      id = String(window.location.href);
+      id = id.substr(-3, 3);
+      messageData.append("message", message);
+      messageData.append("bookid", id);
+      // 帶資料給後端
+      fetch("/api/recomment", {
+        method: "POST",
+        body: messageData,
       })
-      .catch((err) => console.log("出錯了...", err));
+        .then((res) => res.json())
+        .then((data) => {
+          console.log(data);
+          document.getElementById("recomment").value = "";
+          window.location.reload();
+        })
+        .catch((err) => console.log("出錯了...", err));
+    } else {
+      alert("請輸入留言");
+    }
   } else {
-    alert("請輸入留言");
+    document.querySelector(".popup").style.display = "flex";
   }
 });

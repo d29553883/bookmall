@@ -568,24 +568,7 @@ def input_message():
 		cnx.close()
 				
 	return {'ok': True}, 200
-
-# @app.route('/api/recomment', methods=['GET'])
-# def get_message():
-# 		try:
-# 				x = request.form
-# 				print(x)
-# 				cnx = cnxpool.get_connection()
-# 				cursor = cnx.cursor(buffered = True, dictionary = True)
-# 				cursor.execute("SELECT recomment.message,recomment.username,account.image FROM recomment join account on recomment.email = account.email where recomment.bookid =%s")
-# 				result = cursor.fetchall()
-# 				print(result)
-# 		except:
-# 				return {"error": True, "message": "伺服器內部錯誤"}, 500
-# 		finally:
-# 				cursor.close()
-# 				cnx.close()
-
-# 		return {'data': result}, 200	
+	
 
 
 # app.run(port=3000,debug=True)
