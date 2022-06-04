@@ -183,6 +183,7 @@ def memberinfo():
 	if session != {}:
 		return jsonify({
 			"data":{
+				"id":session['id'],
 				"name":session['name'],
 				"email":session['e_mail']
 			}
