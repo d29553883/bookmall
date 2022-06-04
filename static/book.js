@@ -106,6 +106,24 @@ document
       });
   });
 
+document
+  .getElementById("account_button")
+  .addEventListener("click", function () {
+    fetch("/api/user")
+      .then(function (response) {
+        return response.json();
+      })
+      .then((result) => {
+        let data = result.data;
+        console.log(data);
+        if (data !== null) {
+          location.assign("/account");
+        } else {
+          document.querySelector(".popup").style.display = "flex";
+        }
+      });
+  });
+
 let board = document.querySelector("#board");
 
 function render(message, imageURL, username) {

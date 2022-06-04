@@ -1,6 +1,11 @@
 from flask import *
 # from flask_cors import CORS
 # import mysql.connector
+from pip._vendor import cachecontrol
+import pathlib
+from google.oauth2 import id_token
+from google_auth_oauthlib.flow import Flow
+import google.auth.transport.requests
 import boto3
 import decimal
 import ast
@@ -28,6 +33,60 @@ s3 = boto3.client('s3',
                      )
 
 BUCKET_NAME='aws-test-learn-s3'
+
+
+
+
+os.environ["OAUTHLIB_INSECURE_TRANSPORT"] = "1"
+GOOGLE_CLIENT_ID = "317352549622-993h3cjlcibhbbnnc31t7c0cm9v3u1si.apps.googleusercontent.com"
+client_secrets_file = os.path.join(pathlib.Path(__file__).parent, "client_secret.json")
+
+flow = Flow.from_client_secrets_file(
+	client_secrets_file=client_secrets_file,
+	scopes=["https://www.googleapis.com/auth/userinfo.profile", "https://www.googleapis.com/auth/userinfo.email", "openid"],
+	redirect_uri="https://bookmall.store/callback"
+)
+
+def login_is_required(function):
+	def wrapper(*args, **kwargs):
+		if "google_id" not in session:
+			return abort(401)  # Authorization required
+		else:
+			return function()
+	return wrapper
+
+@app.route("/googleLogin")
+def googleLogin():
+	authorization_url, state = flow.authorization_url()
+	session["state"] = state
+	return redirect(authorization_url)
+
+@app.route("/callback")
+def callback():
+	flow.fetch_token(authorization_response=request.url)
+
+	if not session["state"] == request.args["state"]:
+			abort(500)  # State does not match!
+
+	credentials = flow.credentials
+	request_session = requests.session()
+	cached_session = cachecontrol.CacheControl(request_session)
+	token_request = google.auth.transport.requests.Request(session=cached_session)
+
+	id_info = id_token.verify_oauth2_token(
+			id_token=credentials._id_token,
+			request=token_request,
+			audience=GOOGLE_CLIENT_ID
+	)
+
+	session["google_id"] = id_info.get("sub")
+	session["name"] = id_info.get("name")
+	session["e_mail"] = id_info.get("email")
+	return redirect("/")
+
+
+
+
 
 @app.route('/')
 def index():
@@ -89,6 +148,10 @@ def searchid(bookId):
 		mycursor.execute("SELECT recomment.message,recomment.username,account.image FROM recomment join account on recomment.email = account.email where recomment.bookid =%s" , (bookId,))
 		result2 = mycursor.fetchall()
 		print(result2)
+		if result2 == []:
+			mycursor.execute("SELECT recomment.message,recomment.username FROM recomment where recomment.bookid =%s" , (bookId,))
+			result2 = mycursor.fetchall()
+			print(result2)
 		if result != []:
 			rl = result[0]
 			return {
@@ -103,6 +166,8 @@ def searchid(bookId):
 				"data":result2
 			}, 200 
 
+
+
 	except:
 		return {"error": True, "message": "伺服器內部錯誤"}, 500
 
@@ -110,13 +175,14 @@ def searchid(bookId):
 	# 		mycursor.close()
 	# 		cnx.close()
 
+
+
   
 @app.route("/api/user")
 def memberinfo():
 	if session != {}:
 		return jsonify({
 			"data":{
-				"id":session['id'],
 				"name":session['name'],
 				"email":session['e_mail']
 			}
@@ -203,6 +269,7 @@ def signin():
 		cnx.close()
 
 @app.route("/api/user", methods=["DELETE"])
+# @login_is_required
 def signout():
 	session.clear()
 	return jsonify({
@@ -221,7 +288,6 @@ def check():
 			mycursor.execute(sql, adr)
 			myresult = mycursor.fetchall()
 			count = myresult[0][0]
-			print(count)
 			if count != 0:
 				sql2 = "SELECT id,name,category,author,price,image FROM cart WHERE email = %s"		
 				adr2 = (email,)
@@ -293,7 +359,6 @@ def addCart():
 			adr2 = (name,)
 			mycursor.execute(sql2,adr2)
 			result = mycursor.fetchone()
-			print(result)
 			cartid = result['id']
 
 			return jsonify({
@@ -345,9 +410,7 @@ def deleteBook():
 @app.route('/api/accountPic' ,methods=['POST'])
 def update_pic():
 	img = request.files['file']
-	print(img)
 	email = session["e_mail"]
-	print('信箱', email)  
 	if(len(request.files) != 0):
 		img = request.files['file']
 		filename = secure_filename(img.filename)
@@ -440,15 +503,18 @@ def createBook():
 				response = requests.post('https://sandbox.tappaysdk.com/tpc/payment/pay-by-prime', json = my_data, headers=header)
 				data = response.json()
 				status = data["status"]
+				rec_trade_id = data["rec_trade_id"]
 				if status == 0:
 					for i in myresult:	
 						name = i[0]
 						author = i[1]
 						price	= i[2]
-						sql2 = ("INSERT INTO orderhistory(number,name,author,price,username,email,phone,address,status)" 
-						" VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s)")		
-						adr2 = (number,name,author,price,username,email,phone,address,status)
+						sql2 = ("INSERT INTO orderhistory(number,name,author,price,username,email,phone,address,status,rec_trade_id)" 
+						" VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)")		
+						adr2 = (number,name,author,price,username,email,phone,address,status,rec_trade_id)
 						mycursor.execute(sql2,adr2)
+						cnx.commit()
+						mycursor.execute("DELETE FROM cart where email= %s",(email,))
 						cnx.commit()
 					return jsonify({
 						"data": {
@@ -495,6 +561,57 @@ def createBook():
 		cnx.close()
 
 
+
+@app.route("/api/refund",methods=["POST"])
+def refund():
+	try:
+		req = request.get_json()
+		orderNumber = req["orderNumber"]
+		cnx=cnxpool.get_connection()
+		mycursor=cnx.cursor(buffered = True, dictionary = True)			
+		partnerKey = os.getenv("PARTNERKEY")
+		mycursor.execute("SELECT rec_trade_id FROM orderhistory WHERE number = %s" ,(orderNumber,))
+		myresult = mycursor.fetchall()
+		print(myresult)
+		rec_trade_id = myresult[0]["rec_trade_id"]
+		header = {
+		"content-type": "application/json",
+		"x-api-key": partnerKey
+		}
+		my_data = {
+			"partner_key": partnerKey,
+			"rec_trade_id": rec_trade_id,
+		}
+		response = requests.post('https://sandbox.tappaysdk.com/tpc/transaction/refund', json = my_data, headers=header)
+		data = response.json()
+		print(data)
+		status = data["status"]
+		if status == 0:
+			return jsonify({
+				"data": {
+					"status":status,
+					"message": "退款成功"
+				}
+			})
+		else:
+			return jsonify({
+				"data": {
+					"status":status,
+					"message": "退款失敗"
+				}
+			})
+	except:
+		return jsonify({
+			"error": True,
+			"message": "伺服器內部錯誤"
+		}),500	
+	finally:
+		if cnx.in_transaction:
+			cnx.rollback()
+		cnx.close()				
+
+
+
 @app.route("/api/orders/<orderNumber>")
 def thankyouPage(orderNumber):
 	try:
@@ -532,8 +649,6 @@ def history():
 		adr = (email,)
 		mycursor.execute(sql, adr)
 		myresult = mycursor.fetchall()
-		print(myresult)
-		print(session)
 		return jsonify({
 			"data":myresult
 		})
@@ -542,11 +657,9 @@ def history():
 @app.route('/api/recomment' ,methods=['POST'])
 def input_message():
 	x = request.form
-	print(x)
 	bookid = request.form['bookid']
 	message = request.form['message']	
-	print('留言', message) 
-	print('書本', bookid) 
+
 	try:
 		if session != {}:
 			username = session["name"]

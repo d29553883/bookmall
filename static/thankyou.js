@@ -6,9 +6,7 @@ function thankyouPage() {
   })
     .then((response) => response.json())
     .then((res) => {
-      console.log(res);
       let ordernumber = res.data.number;
-      console.log(ordernumber);
       let numberBox = document.getElementById("numberBox");
       let textBox = document.createElement("div");
       textBox.className = "ordernumber";
@@ -55,3 +53,34 @@ document
         }
       });
   });
+
+document.getElementById("refundBtn").addEventListener("click", function () {
+  x = String(window.location.href);
+  let orderNumber = x.slice(-14);
+  let data = {
+    orderNumber: orderNumber,
+  };
+  fetch("/api/refund", {
+    method: "POST",
+    body: JSON.stringify(data),
+    headers: {
+      "Content-Type": "application/json",
+    },
+  })
+    .then((res) => res.json())
+    .then((data) => {
+      let booktitlebox = document.getElementById("booktitlebox");
+      let refundTextBox = document.createElement("div");
+      refundTextBox.id = "refundTextBox";
+      console.log(data);
+      if (data.data.message === "退款成功") {
+        let refundText = document.createTextNode("退款成功!");
+        refundTextBox.appendChild(refundText);
+        booktitlebox.appendChild(refundTextBox);
+      } else if (data.data.message === "退款失敗") {
+        let refundText = document.createTextNode("退款失敗!");
+        refundTextBox.appendChild(refundText);
+        booktitlebox.appendChild(refundTextBox);
+      }
+    });
+});
