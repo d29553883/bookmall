@@ -5,7 +5,6 @@ function createdata() {
       return response.json();
     })
     .then(function (result) {
-      console.log(result);
       let dotbox = document.getElementsByClassName("dotbox")[0];
       dotbox.parentElement.removeChild(dotbox);
       let science_author_list = [];
@@ -24,7 +23,6 @@ function createdata() {
         science_id_list.push(data1[i].bookid);
       }
       for (let i = 0; i < data1.length; i++) {
-        console.log(science_id_list);
         let swiper_wrapper =
           document.getElementsByClassName("swiper-wrapper")[0];
         let swiper_slide = document.createElement("div");

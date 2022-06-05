@@ -82,7 +82,6 @@ def callback():
 	session["google_id"] = id_info.get("sub")
 	session["name"] = id_info.get("name")
 	session["e_mail"] = id_info.get("email")
-	session["id"] = 1
 	return redirect("/")
 
 
@@ -184,7 +183,7 @@ def memberinfo():
 	if session != {}:
 		return jsonify({
 			"data":{
-				"id":session['id'],
+				# "id":session['id'],
 				"name":session['name'],
 				"email":session['e_mail']
 			}
