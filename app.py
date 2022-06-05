@@ -105,34 +105,35 @@ def thankyou():
 	return render_template("thankyou.html")		
 @app.route("/api/books")
 def books():
-  keyword = request.args.get("keyword")
-  try:
-    if keyword == None:
-      cnx=cnxpool.get_connection()
-      mycursor=cnx.cursor(buffered = True, dictionary = True)
-      mycursor.execute("SELECT bookid, name, category, author, description, image, price, view FROM books WHERE category = '應用科學'")
-      result1 = mycursor.fetchall()
-      mycursor.execute("SELECT bookid, name, category, author, description, image, price, view FROM books WHERE category = '語文'")
-      result2 = mycursor.fetchall()
-      mycursor.execute("SELECT bookid, name, category, author, description, image, price, view FROM books WHERE category = '藝術'")
-      result3 = mycursor.fetchall()
-      mycursor.execute("SELECT bookid, name, category, author, description, image, price, view FROM books WHERE category = '人文'")
-      result4 = mycursor.fetchall()
-      return {'data1': result1,'data2':result2,'data3':result3,'data4':result4}, 200
-    else:
-      cnx=cnxpool.get_connection()
-      mycursor=cnx.cursor(buffered = True, dictionary = True)
-      sql ="SELECT bookid, name, category, author, description, image, price, view FROM books WHERE name LIKE %s"
-      adr = ('%'+keyword+'%',)
-      mycursor.execute(sql,adr)
-      result = mycursor.fetchall()
-      return {'data': result}, 200      
 
-  except:
-    return {"error": True, "message": "伺服器內部錯誤"}, 500
-  finally:
-    mycursor.close()
-    cnx.close()
+	try:
+		keyword = request.args.get("keyword")
+		if keyword == None:
+			cnx=cnxpool.get_connection()
+			mycursor=cnx.cursor(buffered = True, dictionary = True)
+			mycursor.execute("SELECT bookid, name, category, author, description, image, price, view FROM books WHERE category = '應用科學'")
+			result1 = mycursor.fetchall()
+			mycursor.execute("SELECT bookid, name, category, author, description, image, price, view FROM books WHERE category = '語文'")
+			result2 = mycursor.fetchall()
+			mycursor.execute("SELECT bookid, name, category, author, description, image, price, view FROM books WHERE category = '藝術'")
+			result3 = mycursor.fetchall()
+			mycursor.execute("SELECT bookid, name, category, author, description, image, price, view FROM books WHERE category = '人文'")
+			result4 = mycursor.fetchall()
+			return {'data1': result1,'data2':result2,'data3':result3,'data4':result4}, 200
+		else:
+			cnx=cnxpool.get_connection()
+			mycursor=cnx.cursor(buffered = True, dictionary = True)
+			sql ="SELECT bookid, name, category, author, description, image, price, view FROM books WHERE name LIKE %s"
+			adr = ('%'+keyword+'%',)
+			mycursor.execute(sql,adr)
+			result = mycursor.fetchall()
+			return {'data': result}, 200      
+
+	except:
+		return {"error": True, "message": "伺服器內部錯誤"}, 500
+	finally:
+		# mycursor.close()
+		cnx.close()
   
 
 @app.route("/api/book/<bookId>")
@@ -147,11 +148,9 @@ def searchid(bookId):
 		result = mycursor.fetchall()
 		mycursor.execute("SELECT recomment.message,recomment.username,account.image FROM recomment join account on recomment.email = account.email where recomment.bookid =%s" , (bookId,))
 		result2 = mycursor.fetchall()
-		print(result2)
 		if result2 == []:
 			mycursor.execute("SELECT recomment.message,recomment.username FROM recomment where recomment.bookid =%s" , (bookId,))
 			result2 = mycursor.fetchall()
-			print(result2)
 		if result != []:
 			rl = result[0]
 			return {
@@ -685,5 +684,5 @@ def input_message():
 	
 
 
-# app.run(port=3000,debug=True)
+# app.run(port=3000)
 app.run(host='0.0.0.0', port=3000)

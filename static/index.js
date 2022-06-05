@@ -1,6 +1,6 @@
 function createdata() {
-  let src = "/api/books";
-  fetch(src)
+  // let src = "/api/books";
+  fetch("/api/books")
     .then(function (response) {
       return response.json();
     })
@@ -58,8 +58,8 @@ function createdata() {
 createdata();
 
 function createdata2() {
-  let src = "/api/books";
-  fetch(src)
+  // let src = "/api/books";
+  fetch("/api/books")
     .then(function (response) {
       return response.json();
     })
@@ -115,8 +115,8 @@ function createdata2() {
 createdata2();
 
 function createdata3() {
-  let src = "/api/books";
-  fetch(src)
+  // let src = "/api/books";
+  fetch("/api/books")
     .then(function (response) {
       return response.json();
     })
@@ -172,8 +172,8 @@ function createdata3() {
 createdata3();
 
 function createdata4() {
-  let src = "/api/books";
-  fetch(src)
+  // let src = "/api/books";
+  fetch("/api/books")
     .then(function (response) {
       return response.json();
     })
