@@ -37,52 +37,52 @@ BUCKET_NAME='aws-test-learn-s3'
 
 
 
-os.environ["OAUTHLIB_INSECURE_TRANSPORT"] = "1"
-GOOGLE_CLIENT_ID = "317352549622-993h3cjlcibhbbnnc31t7c0cm9v3u1si.apps.googleusercontent.com"
-client_secrets_file = os.path.join(pathlib.Path(__file__).parent, "client_secret.json")
+# os.environ["OAUTHLIB_INSECURE_TRANSPORT"] = "1"
+# GOOGLE_CLIENT_ID = "317352549622-993h3cjlcibhbbnnc31t7c0cm9v3u1si.apps.googleusercontent.com"
+# client_secrets_file = os.path.join(pathlib.Path(__file__).parent, "client_secret.json")
 
-flow = Flow.from_client_secrets_file(
-	client_secrets_file=client_secrets_file,
-	scopes=["https://www.googleapis.com/auth/userinfo.profile", "https://www.googleapis.com/auth/userinfo.email", "openid"],
-	redirect_uri="https://bookmall.store/callback"
-)
+# flow = Flow.from_client_secrets_file(
+# 	client_secrets_file=client_secrets_file,
+# 	scopes=["https://www.googleapis.com/auth/userinfo.profile", "https://www.googleapis.com/auth/userinfo.email", "openid"],
+# 	redirect_uri="https://bookmall.store/callback"
+# )
 
-def login_is_required(function):
-	def wrapper(*args, **kwargs):
-		if "google_id" not in session:
-			return abort(401)  # Authorization required
-		else:
-			return function()
-	return wrapper
+# def login_is_required(function):
+# 	def wrapper(*args, **kwargs):
+# 		if "google_id" not in session:
+# 			return abort(401)  # Authorization required
+# 		else:
+# 			return function()
+# 	return wrapper
 
-@app.route("/googleLogin")
-def googleLogin():
-	authorization_url, state = flow.authorization_url()
-	session["state"] = state
-	return redirect(authorization_url)
+# @app.route("/googleLogin")
+# def googleLogin():
+# 	authorization_url, state = flow.authorization_url()
+# 	session["state"] = state
+# 	return redirect(authorization_url)
 
-@app.route("/callback")
-def callback():
-	flow.fetch_token(authorization_response=request.url)
+# @app.route("/callback")
+# def callback():
+# 	flow.fetch_token(authorization_response=request.url)
 
-	# if not session["state"] == request.args["state"]:
-	# 		abort(500)  # State does not match!
+# 	if not session["state"] == request.args["state"]:
+# 			abort(500)  # State does not match!
 
-	credentials = flow.credentials
-	request_session = requests.session()
-	cached_session = cachecontrol.CacheControl(request_session)
-	token_request = google.auth.transport.requests.Request(session=cached_session)
+# 	credentials = flow.credentials
+# 	request_session = requests.session()
+# 	cached_session = cachecontrol.CacheControl(request_session)
+# 	token_request = google.auth.transport.requests.Request(session=cached_session)
 
-	id_info = id_token.verify_oauth2_token(
-			id_token=credentials._id_token,
-			request=token_request,
-			audience=GOOGLE_CLIENT_ID
-	)
+# 	id_info = id_token.verify_oauth2_token(
+# 			id_token=credentials._id_token,
+# 			request=token_request,
+# 			audience=GOOGLE_CLIENT_ID
+# 	)
 
-	session["google_id"] = id_info.get("sub")
-	session["name"] = id_info.get("name")
-	session["e_mail"] = id_info.get("email")
-	return redirect("/")
+# 	session["google_id"] = id_info.get("sub")
+# 	session["name"] = id_info.get("name")
+# 	session["e_mail"] = id_info.get("email")
+# 	return redirect("/")
 
 
 
