@@ -397,7 +397,10 @@ footer {
   margin-top: 20px;
 
 }
-
+.cart-total{
+  display: flex;
+  font-size: 25px;
+}
 
 
 #backBtn {
@@ -546,7 +549,7 @@ label{
 
 #totalcost {
   display: flex;
-  font-size: 16px;
+  font-size: 30px;
   margin-right: 10px;
   margin-bottom: 25px;
   height: 14px;

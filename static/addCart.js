@@ -130,6 +130,11 @@ function cartInfo() {
               sum += price_list[x];
             }
             cart_total_price.innerText = sum + "元";
+            let totalcost = document.getElementById("totalcost");
+            let totalcosttext = document.createTextNode(
+              "總價 : 新台幣" + sum + "元"
+            );
+            totalcost.appendChild(totalcosttext);
           }
         } else {
           cleanCart();

@@ -319,7 +319,6 @@ footer {
   display: flex;
   justify-content:flex-start;
   width: 1200px;
-  height: 150px;
   margin: auto;
   flex-direction: column;
 }

@@ -331,7 +331,6 @@ a {
 .titlebox {
   display: flex;
   width: 600px;
-  height: 33px;
   margin: 30px 25px 5px 5px;
   color: #666666;
   font-weight: bold;
