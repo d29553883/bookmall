@@ -82,38 +82,7 @@ a {
   justify-content: flex-end;
   flex: auto;
 }
-#orBox{
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-#orText{
-  display: flex;
-  margin-left: 30px;
-  margin-right: 30px;
-}
-#orLine{
-  display: flex;
-  width: 100px;
-  height: 1px;
-  max-width: 60px;
-  background-color: #7e9515; 
-}
-#gp{
-  display: flex;
-}
-#googleLogin{
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: 18px;
-}
-#googleLogin_button {
-  text-decoration: none;
-  color: #1f2ed8;
-  display: flex;
-  cursor: pointer;
-}
+
 .popup_signup {
   background: rgb(0, 0, 0, 0.4);
   width: 100%;
@@ -137,7 +106,7 @@ a {
 .popup-content {
   margin-top: 80px;
   width: 340px;
-  height: 350px;
+  height: 280px;
   max-height: 350px;
   background: #ffffff;
   border-radius: 5px;
