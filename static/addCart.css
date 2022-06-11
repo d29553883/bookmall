@@ -217,6 +217,7 @@ a {
   text-decoration: none;
   color: #666666;
   cursor: pointer;
+  position: relative;
 }
 #login_button {
   text-decoration: none;
@@ -241,6 +242,22 @@ a {
   cursor: pointer;
 }
 
+
+#countBox{
+  display: flex;
+  border-radius: 50%;
+  justify-content: center;
+  align-items: center;
+  background-color: #B4D51E;
+  color: #f7f7f7;
+  font-size: 9px;
+  font-weight: bold;
+  width: 18px;
+  height: 18px;
+  position: absolute;
+  right:-5px;
+  top:-5px;
+}
 
 footer {
   display: flex;
@@ -365,6 +382,28 @@ footer {
   color: #666666;
   margin-top: 20px;
 
+}
+#cart_quantity_box{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-left: 10px;
+  margin-bottom: 10px;
+  height: 40px;
+  width: 55px;
+}
+.cart_quantity{
+  display: flex;
+  height: 34px;
+  width: 50px;
+  border-radius: 5px;
+  border: 1px solid #56CCF2;
+  background-color: #eee;
+  color: #333;
+  padding: 0;
+  text-align: center;
+  font-size: 1.2em;
+  /* margin-right: 25px; */
 }
 .cart-total{
   display: flex;

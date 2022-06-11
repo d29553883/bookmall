@@ -248,8 +248,6 @@ function searchdata() {
     .then(function (result) {
       let data = result.data;
       if (searchkeyword.value !== "" && result.data.length !== 0) {
-        console.log(result.data.length);
-        console.log(searchkeyword.value);
         let datas = result.data;
         // let nextpage = result.nextPage;
         Page = 0;
@@ -338,15 +336,6 @@ searchBtn.addEventListener("click", function () {
   document.getElementById("section_warp").style.flexDirection = "row";
   searchdata();
 });
-
-// window.addEventListener("fetch", () => {
-//   const loader = document.querySelector(".loader");
-//   loader.classList.add("loader--hidden");
-
-//   loader.addEventListener("result", () => {
-//     document.body.removeChild(loader);
-//   });
-// });
 
 document
   .getElementById("reservation_button")

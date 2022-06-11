@@ -82,7 +82,6 @@ let image = "";
 
 file.addEventListener("change", (e) => {
   image = e.target.files[0];
-  console.log(image);
   imgData.append("file", image);
   fetch("/api/accountPic", {
     method: "POST",
@@ -95,12 +94,9 @@ file.addEventListener("change", (e) => {
 
   if (image) {
     const reader = new FileReader(); //FileReader is a predefined function of JS
-    console.log(reader);
-
     reader.addEventListener("load", function () {
       img.setAttribute("src", reader.result);
     });
-
     reader.readAsDataURL(image);
   }
 });
@@ -112,7 +108,6 @@ function history() {
     .then((res) => res.json())
     .then((data) => {
       datahistory = data.data;
-      console.log(datahistory);
       let historyTitleBox = document.getElementById("historyTitleBox");
       if (datahistory !== []) {
         for (let i = 0; i < datahistory.length; i++) {
@@ -132,14 +127,18 @@ function history() {
           let orderPrice = document.createTextNode(
             datahistory[i].price + " 元"
           );
+          let countBox = document.createElement("div");
+          let count = document.createTextNode(" x " + datahistory[i].count);
           orderPriceBox.appendChild(orderPrice);
           ordernumberBox.appendChild(ordernumber);
+          countBox.appendChild(count);
           orderNameBox.appendChild(orderName);
           orderAuthorBox.appendChild(orderAuthor);
           historyBox.appendChild(ordernumberBox);
           historyBox.appendChild(orderNameBox);
           historyBox.appendChild(orderAuthorBox);
           historyBox.appendChild(orderPriceBox);
+          historyBox.appendChild(countBox);
           historyTitleBox.appendChild(historyBox);
         }
       } else {

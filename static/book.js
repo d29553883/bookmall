@@ -15,6 +15,8 @@ function singlepage() {
       let tabImg = document.createElement("img");
       let category = document.getElementsByClassName("category")[0];
       let category_text = document.createTextNode("分類 : " + result.category);
+      let stockElement = document.getElementsByClassName("stock")[0];
+      let stock_text = document.createTextNode("剩餘 : " + result.stock);
       tabImg.className = "tabImg";
       tabImg.src = result.image;
       let pricebox = document.getElementsByClassName("b2")[0];
@@ -22,11 +24,23 @@ function singlepage() {
       let contentbox = document.getElementsByClassName("contentbox")[0];
       let content = document.createTextNode(result.description);
       category.appendChild(category_text);
+      stockElement.appendChild(stock_text);
       pricebox.appendChild(price);
       titlebox.appendChild(title);
       title2box.appendChild(title2);
       contentbox.appendChild(content);
       tab.appendChild(tabImg);
+      let stock = stockElement.innerText.replace("剩餘 : ", "");
+      if (stock === "0") {
+        let soldOutBox = document.createElement("div");
+        soldOutBox.className = "soldOutBox";
+        let soldOut = document.createElement("img");
+        soldOut.className = "soldOut";
+        soldOut.src = "../static/out-of-stock.png";
+        soldOutBox.appendChild(soldOut);
+        tab.appendChild(soldOutBox);
+        tabImg.style.filter = "grayscale(100%)";
+      }
     });
 }
 singlepage();
@@ -67,7 +81,6 @@ function createinfo() {
   })
     .then((response) => response.json())
     .then((res) => {
-      console.log(res);
       location.assign("/addCart");
     });
 }
@@ -79,9 +92,36 @@ document.getElementById("addCartBtn").addEventListener("click", function () {
     })
     .then((result) => {
       let data = result.data;
-      console.log(data);
+      let book_list = [];
+      let stockElement = document.getElementsByClassName("stock")[0];
+      let stock = stockElement.innerText.replace("剩餘 : ", "");
       if (data !== null) {
-        createinfo();
+        fetch("/api/addCart")
+          .then(function (response) {
+            return response.json();
+          })
+          .then((result) => {
+            let titlebox = document.getElementsByClassName("titlebox")[0];
+            let title = titlebox.innerText;
+            let data = result.data;
+            if (stock === "0") {
+              return "";
+            } else {
+              if (data !== null) {
+                // 偵測購物車裡是否有重複商品
+                for (let i = 0; i < data.length; i++) {
+                  book_list.push(data[i].name);
+                }
+                if (book_list.includes(title)) {
+                  alert("此商品已經在購物車裡!");
+                } else {
+                  createinfo();
+                }
+              } else {
+                createinfo();
+              }
+            }
+          });
       } else {
         document.querySelector(".popup").style.display = "flex";
       }
@@ -97,7 +137,6 @@ document
       })
       .then((result) => {
         let data = result.data;
-        console.log(data);
         if (data !== null) {
           location.assign("/addCart");
         } else {
@@ -115,7 +154,6 @@ document
       })
       .then((result) => {
         let data = result.data;
-        console.log(data);
         if (data !== null) {
           location.assign("/account");
         } else {
@@ -164,7 +202,6 @@ window.addEventListener("load", () => {
   })
     .then((res) => res.json())
     .then((data) => {
-      console.log(data.data);
       data.data.forEach((data) =>
         render(data.message, data.image, data.username)
       );
@@ -188,7 +225,6 @@ document.getElementById("postBtn").addEventListener("click", function () {
       })
         .then((res) => res.json())
         .then((data) => {
-          console.log(data);
           document.getElementById("recomment").value = "";
           window.location.reload();
         })

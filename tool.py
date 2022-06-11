@@ -10,9 +10,9 @@ with open('book.json',encoding="utf-8") as f:
   data = json.load(f)
   try:
     for i in data:
-      sql = ("INSERT INTO books (bookid, name, category, author, description, image, price, view)"
-      "VALUES (%s, %s, %s, %s, %s, %s, %s, %s)")
-      adr = (i["id"],i["title"],i["category"],i["author"],i["book_intro"],i["cover"],i["price"],i["view"])
+      sql = ("INSERT INTO books (bookid, name, category, author, description, image, price, view, stock)"
+      "VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)")
+      adr = (i["id"],i["title"],i["category"],i["author"],i["book_intro"],i["cover"],i["price"],i["view"],100)
       mycursor.execute(sql,adr)
       cnx.commit()
   except:

@@ -38,7 +38,6 @@ function singup() {
   })
     .then((response) => response.json())
     .then((res) => {
-      console.log(res);
       if (res.ok === true) {
         let successout = document.getElementsByClassName("successlogin")[0];
         successout.innerHTML = "";
@@ -83,6 +82,7 @@ document
 document
   .getElementsByClassName("maintitle")[0]
   .addEventListener("click", function () {
+    // updateCount();
     location.assign("/");
   });
 
@@ -122,3 +122,23 @@ document.getElementById("switch_login").addEventListener("click", function () {
   document.querySelector(".popup_signup").style.display = "none";
   document.querySelector(".popup").style.display = "flex";
 });
+
+function cartCount() {
+  fetch("/api/cartCount")
+    .then(function (response) {
+      return response.json();
+    })
+    .then(function (result) {
+      if (result.message === "未登入系統，拒絕存取") {
+        return;
+      } else {
+        let cart = document.getElementById("reservation_button");
+        let countBox = document.createElement("div");
+        countBox.id = "countBox";
+        let countText = document.createTextNode(result.count[0]);
+        countBox.appendChild(countText);
+        cart.appendChild(countBox);
+      }
+    });
+}
+cartCount();

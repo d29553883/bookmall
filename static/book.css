@@ -219,6 +219,7 @@ a {
   text-decoration: none;
   color: #666666;
   cursor: pointer;
+  position: relative;
 }
 #login_button {
   text-decoration: none;
@@ -243,6 +244,22 @@ a {
   cursor: pointer;
 }
 
+
+#countBox{
+  display: flex;
+  border-radius: 50%;
+  justify-content: center;
+  align-items: center;
+  background-color: #B4D51E;
+  color: #f7f7f7;
+  font-size: 9px;
+  font-weight: bold;
+  width: 18px;
+  height: 18px;
+  position: absolute;
+  right:-5px;
+  top:-5px;
+}
 
 #addCartBtn {
   display: flex;
@@ -275,12 +292,28 @@ a {
   position: relative;
   margin: 15px 15px 15px 15px;
 }
+#tab{
+  display: flex;
+  position: relative;
+}
 .tabImg {
   flex: none;
   width: 340px;
   height: 424px;
   object-fit: cover;
   border-radius: 5px;
+}
+.soldOutBox{
+  display: flex;
+  position: absolute;
+  bottom: -20px;
+  right: -20px;
+}
+.soldOut {
+  flex: none;
+  width: 128px;
+  height: 128px;
+  object-fit: cover;
 }
 
 .section1 {
@@ -342,6 +375,12 @@ a {
   font-weight: bold;
 }
 .category{
+  display: flex;
+  width: 560px;
+  height: 22px;
+  margin: 15px 20px 15px 0px;
+}
+.stock{
   display: flex;
   width: 560px;
   height: 22px;

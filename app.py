@@ -1,11 +1,4 @@
 from flask import *
-# from flask_cors import CORS
-# import mysql.connector
-from pip._vendor import cachecontrol
-import pathlib
-from google.oauth2 import id_token
-from google_auth_oauthlib.flow import Flow
-import google.auth.transport.requests
 import boto3
 import decimal
 import ast
@@ -16,9 +9,9 @@ from datetime import datetime
 from sqlalchemy import true
 from werkzeug.utils import secure_filename
 import os
-from dotenv import load_dotenv
+# from dotenv import load_dotenv
 
-load_dotenv()
+# load_dotenv()
 
 app=Flask(__name__)
 # CORS(app)
@@ -86,7 +79,7 @@ def searchid(bookId):
 	try:
 		cnx=cnxpool.get_connection()
 		mycursor=cnx.cursor(buffered = True, dictionary = True)
-		sql ="SELECT bookid, name, category, author, description, image, price, view FROM books WHERE bookid = %s"
+		sql ="SELECT bookid, name, category, author, description, image, price, stock, view FROM books WHERE bookid = %s"
 		i = int(bookId)
 		adr = (i,)
 		mycursor.execute(sql,adr)
@@ -106,6 +99,7 @@ def searchid(bookId):
 				"description":rl["description"],
 				"image":rl["image"],
 				"price":rl["price"],
+				"stock":rl["stock"],
 				"view":rl["view"],
 				"data":result2
 			}, 200 
@@ -119,7 +113,31 @@ def searchid(bookId):
 	# 		mycursor.close()
 	# 		cnx.close()
 
-
+@app.route("/api/cartCount")
+def cartCount():
+	try:
+		cnx=cnxpool.get_connection()
+		mycursor=cnx.cursor()
+		if session != {}:
+			email = session["e_mail"]
+			mycursor.execute("SELECT count(name) FROM cart WHERE email = %s " ,(email,))
+			myresult = mycursor.fetchall()
+			return jsonify({
+				"count":myresult[0]
+			}),200
+		else:
+			return jsonify({
+				"error": True,
+				"message": "未登入系統，拒絕存取"
+			}),403
+	except:
+		return jsonify({
+			"error": True,
+			"message": "伺服器崩潰"
+		}),500
+	finally:
+		mycursor.close()
+		cnx.close()				
 
   
 @app.route("/api/user")
@@ -214,7 +232,6 @@ def signin():
 		cnx.close()
 
 @app.route("/api/user", methods=["DELETE"])
-# @login_is_required
 def signout():
 	session.clear()
 	return jsonify({
@@ -234,7 +251,7 @@ def check():
 			myresult = mycursor.fetchall()
 			count = myresult[0][0]
 			if count != 0:
-				sql2 = "SELECT id,name,category,author,price,image FROM cart WHERE email = %s"		
+				sql2 = "SELECT id,name,category,author,price,image,stock FROM cart WHERE email = %s"		
 				adr2 = (email,)
 				mycursor.execute(sql2, adr2)
 				myresult2 = mycursor.fetchall()
@@ -248,6 +265,7 @@ def check():
 						"author":myresult2[i][3],
 						"price":myresult2[i][4],
 						"image":myresult2[i][5],
+						"stock":myresult2[i][6],
 					}
 					i+=1
 					list.append(prelist.copy())
@@ -284,7 +302,7 @@ def addCart():
 		req = request.get_json()
 		bookid = req["id"]
 		email = session['e_mail']
-		sql = "SELECT name,category,author,price,image FROM books WHERE bookid = %s"
+		sql = "SELECT name,category,author,price,image,stock FROM books WHERE bookid = %s"
 		adr = (bookid,)	
 		mycursor.execute(sql, adr)
 		myresult = mycursor.fetchall()
@@ -294,10 +312,11 @@ def addCart():
 		author = x['author']
 		price = x['price']
 		image = x['image']
+		stock = x['stock']
 		if myresult != []:
-			sql = ("INSERT INTO cart(bookid,name,category,author,price,image,email)"
-			"VALUES(%s,%s,%s,%s,%s,%s,%s)")		
-			adr = (bookid,name,category,author,price,image,email)
+			sql = ("INSERT INTO cart(bookid,name,category,author,price,image,email,stock)"
+			"VALUES(%s,%s,%s,%s,%s,%s,%s,%s)")		
+			adr = (bookid,name,category,author,price,image,email,stock)
 			mycursor.execute(sql,adr)
 			cnx.commit()
 			sql2 = "SELECT id FROM cart WHERE name = %s"
@@ -309,7 +328,7 @@ def addCart():
 			return jsonify({
 				"id":cartid,
 			"name":name,
-			"categoey":category,
+			"category":category,
 			"author":author,
 			"price":price,
 			"image":image
@@ -383,6 +402,8 @@ def update_pic():
 				
 	return {'ok': True}, 200
 
+
+
 @app.route('/api/accountPic', methods=['GET'])
 def get_pic():
 		try:
@@ -393,8 +414,7 @@ def get_pic():
 				sql = ("SELECT image FROM account WHERE email = %s")
 				adr = (email,)
 				cursor.execute(sql,adr)
-				result = cursor.fetchall()			
-
+				result = cursor.fetchall()		
 		except:
 				return {"error": True, "message": "伺服器內部錯誤"}, 500
 		finally:
@@ -417,6 +437,9 @@ def createBook():
 			email = req["email"]
 			phone = req["phone"]
 			address = req["address"]
+			bookNameList = req["bookName"]
+			countList = req["count"]
+			list_combined = list(zip(bookNameList, countList))
 			sql = "SELECT name,author,price from cart WHERE email = %s" 
 			adr = (email,)
 			mycursor.execute(sql, adr)
@@ -461,6 +484,16 @@ def createBook():
 						cnx.commit()
 						mycursor.execute("DELETE FROM cart where email= %s",(email,))
 						cnx.commit()
+					#取商品數量
+					for i in list_combined:
+						sql = "update orderhistory set count = %s where name = %s AND number = %s"
+						adr = (i[1],i[0],number)
+						mycursor.execute(sql,adr)
+						cnx.commit()
+						sql2 = "update books set stock = stock - %s where name = %s"
+						adr2 = (i[1],i[0])
+						mycursor.execute(sql2,adr2)
+						cnx.commit()						
 					return jsonify({
 						"data": {
 							"number": number,
@@ -517,7 +550,6 @@ def refund():
 		partnerKey = os.getenv("PARTNERKEY")
 		mycursor.execute("SELECT rec_trade_id FROM orderhistory WHERE number = %s" ,(orderNumber,))
 		myresult = mycursor.fetchall()
-		print(myresult)
 		rec_trade_id = myresult[0]["rec_trade_id"]
 		header = {
 		"content-type": "application/json",
@@ -590,7 +622,7 @@ def history():
 		cnx=cnxpool.get_connection()
 		mycursor=cnx.cursor(buffered = True, dictionary = True)
 		email = session["e_mail"]
-		sql = "SELECT number,name,author,price FROM orderhistory WHERE email = %s" 
+		sql = "SELECT number,name,author,price,count FROM orderhistory WHERE email = %s" 
 		adr = (email,)
 		mycursor.execute(sql, adr)
 		myresult = mycursor.fetchall()
