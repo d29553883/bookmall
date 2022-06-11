@@ -204,19 +204,17 @@ function updateCartTotal() {
 }
 updateCartTotal();
 function quantityChanged(event) {
-  var input = event.target;
-  stock = event.target.parentElement.parentElement
-    .getElementsByClassName("stock_box")[0]
-    .innerText.replace("剩餘 : ", "");
-  if (stock < input.value) {
-    input.value = stock;
-  }
+  let input = event.target;
   if (isNaN(input.value) || input.value <= 0) {
     input.value = 1;
   }
-  if (isNaN(input.value) || input.value >= 3) {
-    input.value = 3;
+  if (input.value > 5) {
+    input.value = 5;
   }
+  stock = event.target.parentElement.parentElement
+    .getElementsByClassName("stock_box")[0]
+    .innerText.replace("剩餘 : ", "");
+  event.target.setAttribute("max", stock);
   updateCartTotal();
 }
 
