@@ -13,7 +13,12 @@
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
     />
-    <link rel="stylesheet" href={{ url_for('static', filename='style.css') }}/>
+    <link
+      href="../static/css/style.css"
+      rel="stylesheet"
+      type="text/css"
+      media="all"
+    />
   </head>
   <body>
     <div class="headout">
@@ -36,7 +41,7 @@
               <img
                 id="b2"
                 style="width: 24px; height: 24px"
-                src="../static/search.png"
+                src="../static/pic/search.png"
               />
             </button>
           </div>
@@ -45,12 +50,12 @@
           <a style="margin-right: 1rem" id="account_button" type="button"
             ><img
               style="width: 26px; height: 26px"
-              src="../static/iconmonstr-user-6.svg"
+              src="../static/pic/iconmonstr-user-6.svg"
           /></a>
           <a style="margin-right: 1rem" id="reservation_button" type="button"
             ><img
               style="width: 28px; height: 28px"
-              src="../static/shopping_cart.png"
+              src="../static/pic/shopping_cart.png"
           /></a>
           <a id="login_button">登入/註冊</a>
           <div id="logout_button" type="button">登出系統</div>
@@ -65,7 +70,7 @@
             <div id="maintitle_book">Book</div>
             <div id="maintitle_mall">mall</div>
           </div>
-          <img src="../static/icon_close.svg" alt="Close" class="close" />
+          <img src="../static/pic/icon_close.svg" alt="Close" class="close" />
         </div>
         <form>
           <input
@@ -101,7 +106,7 @@
             <div id="maintitle_book">Book</div>
             <div id="maintitle_mall">mall</div>
           </div>
-          <img src="../static/icon_close.svg" alt="Close" class="close2" />
+          <img src="../static/pic/icon_close.svg" alt="Close" class="close2" />
         </div>
         <form action="/api/user" method="POST">
           <input
@@ -138,7 +143,7 @@
     </div>
 
     <div class="welcome">
-      <img id="welcome_img" src="../static/Hero.png" />
+      <img id="welcome_img" src="../static/pic/Hero.png" />
     </div>
     <div id="section_warp">
       <div id="science_box">應用科學</div>
@@ -277,9 +282,9 @@
         <div>COPYRIGHT ©2022 Bookmall</div>
       </div>
     </footer>
-    <script type="text/javascript" src="../static/index.js"></script>
+    <script type="text/javascript" src="../static/js/index.js"></script>
     <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
-    <script type="text/javascript" src="../static/member.js"></script>
+    <script type="text/javascript" src="../static/js/member.js"></script>
     <script>
       var swiper = new Swiper(".mySwiper", {
         slidesPerView: 4,

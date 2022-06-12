@@ -301,7 +301,7 @@ function searchdata() {
         let error = document.createElement("div");
         error.className = "error";
         let img = document.createElement("img");
-        img.src = "../static/Not Found illustration.svg";
+        img.src = "../static/pic/Not Found illustration.svg";
         let cartTextBox = document.createElement("div");
         cartTextBox.id = "cartTextBox";
         let noresult = document.createTextNode("查無此商品");

@@ -5,8 +5,12 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>thankyouPage</title>
-    <link rel="stylesheet" href={{ url_for('static', filename='thankyou.css')
-    }}/>
+    <link
+      href="../static/css/thankyou.css"
+      rel="stylesheet"
+      type="text/css"
+      media="all"
+    />
   </head>
   <body>
     <div class="headout">
@@ -20,7 +24,7 @@
           <a style="margin-right: 1rem" id="reservation_button" type="button"
             ><img
               style="width: 28px; height: 28px"
-              src="../static/shopping_cart.png"
+              src="../static/pic/shopping_cart.png"
           /></a>
           <a id="login_button">登入/註冊</a>
           <div id="logout_button" type="button">登出系統</div>
@@ -35,7 +39,7 @@
             <div id="maintitle_book">Book</div>
             <div id="maintitle_mall">mall</div>
           </div>
-          <img src="../static/icon_close.svg" alt="Close" class="close" />
+          <img src="../static/pic/icon_close.svg" alt="Close" class="close" />
         </div>
         <form>
           <input
@@ -71,7 +75,7 @@
             <div id="maintitle_book">Book</div>
             <div id="maintitle_mall">mall</div>
           </div>
-          <img src="../static/icon_close.svg" alt="Close" class="close2" />
+          <img src="../static/pic/icon_close.svg" alt="Close" class="close2" />
         </div>
         <form action="/api/user" method="POST">
           <input
@@ -108,7 +112,7 @@
     </div>
     <div id="booktitlebox">
       <div id="tickBox">
-        <img src="../static/check_sign_icon.png" />
+        <img src="../static/pic/check_sign_icon.png" />
       </div>
       <div id="booktitle">
         <a>已經收到您的訂單</a>
@@ -128,7 +132,7 @@
       </div>
     </footer>
 
-    <script type="text/javascript" src="../static/member.js"></script>
-    <script type="text/javascript" src="../static/thankyou.js"></script>
+    <script type="text/javascript" src="../static/js/member.js"></script>
+    <script type="text/javascript" src="../static/js/thankyou.js"></script>
   </body>
 </html>

@@ -4,8 +4,12 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href={{ url_for('static', filename='addCart.css')
-    }}/>
+    <link
+      href="../static/css/addCart.css"
+      rel="stylesheet"
+      type="text/css"
+      media="all"
+    />
     <title>cartPage</title>
   </head>
   <body>
@@ -20,12 +24,12 @@
           <a style="margin-right: 1rem" id="account_button" type="button"
             ><img
               style="width: 26px; height: 26px"
-              src="../static/iconmonstr-user-6.svg"
+              src="../static/pic/iconmonstr-user-6.svg"
           /></a>
           <a style="margin-right: 1rem" id="reservation_button" type="button"
             ><img
               style="width: 28px; height: 28px"
-              src="../static/shopping_cart.png"
+              src="../static/pic/shopping_cart.png"
           /></a>
           <a id="login_button">登入/註冊</a>
           <div id="logout_button" type="button">登出系統</div>
@@ -41,7 +45,7 @@
             <div id="maintitle_book">Book</div>
             <div id="maintitle_mall">mall</div>
           </div>
-          <img src="../static/icon_close.svg" alt="Close" class="close" />
+          <img src="../static/pic/icon_close.svg" alt="Close" class="close" />
         </div>
         <form>
           <input
@@ -78,7 +82,7 @@
             <div id="maintitle_book">Book</div>
             <div id="maintitle_mall">mall</div>
           </div>
-          <img src="../static/icon_close.svg" alt="Close" class="close2" />
+          <img src="../static/pic/icon_close.svg" alt="Close" class="close2" />
         </div>
         <form action="/api/user" method="POST">
           <input
@@ -131,7 +135,7 @@
         <div id="section2">
           <div id="content">
             <div id="payImgBox">
-              <img src="../static/Happy Bunch Avatar.svg" />
+              <img src="../static/pic/Happy Bunch Avatar.svg" />
             </div>
             <div id="info_title">你的付款資訊</div>
             <div>
@@ -190,7 +194,7 @@
       integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
       crossorigin="anonymous"
     ></script>
-    <script type="text/javascript" src="../static/addCart.js"></script>
-    <script type="text/javascript" src="../static/member.js"></script>
+    <script type="text/javascript" src="../static/js/addCart.js"></script>
+    <script type="text/javascript" src="../static/js/member.js"></script>
   </body>
 </html>

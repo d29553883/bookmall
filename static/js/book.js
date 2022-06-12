@@ -36,7 +36,7 @@ function singlepage() {
         soldOutBox.className = "soldOutBox";
         let soldOut = document.createElement("img");
         soldOut.className = "soldOut";
-        soldOut.src = "../static/out-of-stock.png";
+        soldOut.src = "../static/pic/out-of-stock.png";
         soldOutBox.appendChild(soldOut);
         tab.appendChild(soldOutBox);
         tabImg.style.filter = "grayscale(100%)";

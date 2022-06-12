@@ -38,7 +38,7 @@ function cleanCart() {
   let cartEmpty = document.createElement("div");
   cartEmpty.className = "cartEmpty";
   let img = document.createElement("img");
-  img.src = "../static/Cart illustartion.svg";
+  img.src = "../static/pic/Cart illustartion.svg";
   let cartTextBox = document.createElement("div");
   cartTextBox.id = "cartTextBox";
   let cartText = document.createTextNode("你的購物車沒有商品");
@@ -129,7 +129,7 @@ function cartInfo() {
             let icon = document.createElement("img");
             icon.id = id_list[i];
             icon.setAttribute("onclick", "deleteBook(" + icon.id + ")");
-            icon.src = "../static/icon_delete.svg";
+            icon.src = "../static/pic/icon_delete.svg";
             delete_button.appendChild(icon);
             name_box.appendChild(nameTextNode);
             author_box.appendChild(authorTextNode);
