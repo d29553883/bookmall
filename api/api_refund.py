@@ -54,6 +54,5 @@ def refund():
 			"message": "伺服器內部錯誤"
 		}),500	
 	finally:
-		if cnx.in_transaction:
-			cnx.rollback()
+		mycursor.close()
 		cnx.close()

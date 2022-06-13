@@ -37,7 +37,7 @@ def update_pic():
 	try:
 		cnx = cnxpool.get_connection()
 		mycursor=cnx.cursor(dictionary = True)
-		sql = ("INSERT INTO account (email, image)"
+		sql = ("INSERT INTO account2 (email, image)"
 		"VALUES (%s, %s) ON duplicate KEY UPDATE"
 		"`email` =VALUES(`email`),`image`=VALUES(`image`)")
 		adr = (email, "https://d1kfzndf9j846w.cloudfront.net/"+filename)
@@ -56,19 +56,19 @@ def update_pic():
 
 @api_accountPic.route('/api/accountPic', methods=['GET'])
 def get_pic():
-		try:
-				cnx = cnxpool.get_connection()
-				cursor = cnx.cursor(buffered = True, dictionary = True)
-				email = session["e_mail"]
-				name = session["name"]
-				sql = ("SELECT image FROM account WHERE email = %s")
-				adr = (email,)
-				cursor.execute(sql,adr)
-				result = cursor.fetchall()		
-		except:
-				return {"error": True, "message": "伺服器內部錯誤"}, 500
-		finally:
-				cursor.close()
-				cnx.close()
+	try:
+		cnx = cnxpool.get_connection()
+		cursor = cnx.cursor(buffered = True, dictionary = True)
+		email = session["e_mail"]
+		name = session["name"]
+		sql = ("SELECT image FROM account2 WHERE email = %s")
+		adr = (email,)
+		cursor.execute(sql,adr)
+		result = cursor.fetchall()		
+	except:
+		return {"error": True, "message": "伺服器內部錯誤"}, 500
+	finally:
+		cursor.close()
+		cnx.close()
 
-		return {'data': result,'name':name,'email':email}, 200
+	return {'data': result,'name':name,'email':email}, 200

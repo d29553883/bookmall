@@ -21,7 +21,8 @@ def input_message():
 			email = session["e_mail"]	
 			cnx = cnxpool.get_connection()
 			mycursor=cnx.cursor(dictionary = True)
-			mycursor.execute("INSERT INTO recomment (bookid, username, email, message) VALUES (%s,%s,%s,%s)", (bookid,username,email,message))
+			mycursor.execute("INSERT INTO recomment2 (bookid, username, email, message) VALUES (%s,%s,%s,%s)", (bookid,username,email,message))
+			cnx.commit()
 		else:
 				return jsonify({
 					"error": True,
@@ -32,7 +33,6 @@ def input_message():
 		return {"error": True, "message": "伺服器內部錯誤"}, 500
 	finally:
 		mycursor.close()
-		cnx.commit()
 		cnx.close()
 				
 	return {'ok': True}, 200
