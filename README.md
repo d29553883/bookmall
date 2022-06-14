@@ -16,11 +16,11 @@ Here's the website : https://bookmall.store/
 * Session-Based Authentication
  
 ### Searching detail information of book
-* Keying keyword to search specific books
+* Searching for products by using the keywords
 ![image](https://res.cloudinary.com/davidlin/image/upload/v1655187978/logo/%E6%88%AA%E5%9C%963_nz7zyy.png)
 
-### message board
-* User can leave some comments on the board
+### Message board
+* User can leave a review on the board
 ![image](https://res.cloudinary.com/davidlin/image/upload/v1655188898/logo/%E6%88%AA%E5%9C%967_ty1tsp.png)
 
 ### Shopping Cart
