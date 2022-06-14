@@ -29,9 +29,9 @@ Here's the website : https://bookmall.store/
 
 ![image](https://res.cloudinary.com/davidlin/image/upload/v1655189726/logo/%E6%88%AA%E5%9C%968_z2tld5.png)
 
-### Pay and Refund
+### Payments and Refunds
 * Paying the order with a credit card
-* Also support refund
+* Request a refund
 ![image](https://res.cloudinary.com/davidlin/image/upload/v1655180954/logo/%E6%88%AA%E5%9C%966_vozwq0.png)
 ![image](https://res.cloudinary.com/davidlin/image/upload/v1655190205/logo/%E6%88%AA%E5%9C%969_tps2bo.png)
 
