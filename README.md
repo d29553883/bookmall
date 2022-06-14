@@ -1,5 +1,5 @@
 # Bookmall
-It's a website project to buy some books.
+Online bookstore project
 
 ## Demo
 
