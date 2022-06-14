@@ -24,7 +24,7 @@ Here's the website : https://bookmall.store/
 ![image](https://res.cloudinary.com/davidlin/image/upload/v1655188898/logo/%E6%88%AA%E5%9C%967_ty1tsp.png)
 
 ### Shopping Cart
-* User add some books to the shopping cart
+* User can add the books to the shopping cart
 ![image](https://res.cloudinary.com/davidlin/image/upload/v1655187978/logo/%E6%88%AA%E5%9C%964_httbs4.png)
 
 ![image](https://res.cloudinary.com/davidlin/image/upload/v1655189726/logo/%E6%88%AA%E5%9C%968_z2tld5.png)
