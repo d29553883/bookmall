@@ -15,7 +15,7 @@ Here's the website : https://bookmall.store/
 #### Login
 * Session-Based Authentication
  
-### Searching detail information of book
+### Searching detailed information of book
 * Searching for products by using the keywords
 ![image](https://res.cloudinary.com/davidlin/image/upload/v1655187978/logo/%E6%88%AA%E5%9C%963_nz7zyy.png)
 
