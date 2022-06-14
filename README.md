@@ -36,7 +36,7 @@ Here's the website : https://bookmall.store/
 ![image](https://res.cloudinary.com/davidlin/image/upload/v1655190205/logo/%E6%88%AA%E5%9C%969_tps2bo.png)
 
 ### Update profile picture
-* User can upload or update their profile picture
+* User can create and update thier profile
 ![image](https://res.cloudinary.com/davidlin/image/upload/v1655190366/logo/%E6%88%AA%E5%9C%9610_eklabu.png)
 
 
