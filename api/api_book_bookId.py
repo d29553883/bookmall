@@ -9,9 +9,9 @@ api_book_bookId=Blueprint("api_book_bookId", __name__, template_folder="template
 
 @api_book_bookId.route("/api/book/<bookId>")
 def searchid(bookId):
+	cnx=cnxpool.get_connection()
+	mycursor=cnx.cursor(buffered = True, dictionary = True)	
 	try:
-		cnx=cnxpool.get_connection()
-		mycursor=cnx.cursor(buffered = True, dictionary = True)
 		sql ="SELECT bookid, name, category, author, description, image, price, stock, view FROM books WHERE bookid = %s"
 		i = int(bookId)
 		adr = (i,)
@@ -40,3 +40,7 @@ def searchid(bookId):
 
 	except:
 		return {"error": True, "message": "伺服器內部錯誤"}, 500
+
+	finally:
+		mycursor.close()
+		cnx.close()		
