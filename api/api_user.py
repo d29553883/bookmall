@@ -27,9 +27,9 @@ def memberinfo():
 
 @api_user.route("/api/user", methods=["POST"])
 def signup():
+	cnx=cnxpool.get_connection()
+	mycursor=cnx.cursor() 	
 	try:
-		cnx=cnxpool.get_connection()
-		mycursor=cnx.cursor() 
 		req = request.get_json()
 		e_mail = req["email"]
 		sql = "SELECT email FROM member WHERE email = %s"
@@ -63,9 +63,9 @@ def signup():
 
 @api_user.route("/api/user", methods=["PATCH"])
 def signin():
+	cnx=cnxpool.get_connection()
+	mycursor=cnx.cursor()	
 	try:
-		cnx=cnxpool.get_connection()
-		mycursor=cnx.cursor()
 		req = request.get_json()
 		e_mail = req["email"]
 		passWord = req["password"]

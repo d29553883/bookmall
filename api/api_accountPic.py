@@ -23,6 +23,8 @@ api_accountPic=Blueprint("api_accountPic", __name__, template_folder="templates"
 
 @api_accountPic.route('/api/accountPic' ,methods=['POST'])
 def update_pic():
+	cnx = cnxpool.get_connection()
+	mycursor=cnx.cursor(dictionary = True)
 	img = request.files['file']
 	email = session["e_mail"]
 	if(len(request.files) != 0):
@@ -35,8 +37,6 @@ def update_pic():
 	except:
 		return {"error": True, "message": "伺服器內部錯誤"}, 500
 	try:
-		cnx = cnxpool.get_connection()
-		mycursor=cnx.cursor(dictionary = True)
 		sql = ("INSERT INTO account2 (email, image)"
 		"VALUES (%s, %s) ON duplicate KEY UPDATE"
 		"`email` =VALUES(`email`),`image`=VALUES(`image`)")
@@ -56,9 +56,9 @@ def update_pic():
 
 @api_accountPic.route('/api/accountPic', methods=['GET'])
 def get_pic():
+	cnx = cnxpool.get_connection()
+	cursor = cnx.cursor(buffered = True, dictionary = True)	
 	try:
-		cnx = cnxpool.get_connection()
-		cursor = cnx.cursor(buffered = True, dictionary = True)
 		email = session["e_mail"]
 		name = session["name"]
 		sql = ("SELECT image FROM account2 WHERE email = %s")

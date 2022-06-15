@@ -14,13 +14,12 @@ def input_message():
 	x = request.form
 	bookid = request.form['bookid']
 	message = request.form['message']	
-
+	cnx = cnxpool.get_connection()
+	mycursor=cnx.cursor(dictionary = True)
 	try:
 		if session != {}:
 			username = session["name"]
 			email = session["e_mail"]	
-			cnx = cnxpool.get_connection()
-			mycursor=cnx.cursor(dictionary = True)
 			mycursor.execute("INSERT INTO recomment2 (bookid, username, email, message) VALUES (%s,%s,%s,%s)", (bookid,username,email,message))
 			cnx.commit()
 		else:

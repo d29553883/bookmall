@@ -10,9 +10,9 @@ api_books=Blueprint("api_books", __name__, template_folder="templates")
 
 @api_books.route("/api/books")
 def books():
+	cnx=cnxpool.get_connection()
+	mycursor=cnx.cursor(buffered = True, dictionary = True)
 	try:
-		cnx=cnxpool.get_connection()
-		mycursor=cnx.cursor(buffered = True, dictionary = True)
 		keyword = request.args.get("keyword")
 		if keyword == None:
 			mycursor.execute("SELECT bookid, name, category, author, description, image, price, view FROM books WHERE category = '應用科學'")

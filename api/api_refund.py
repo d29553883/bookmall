@@ -13,11 +13,11 @@ api_refund=Blueprint("api_refund", __name__, template_folder="templates")
 
 @api_refund.route("/api/refund",methods=["POST"])
 def refund():
+	cnx=cnxpool.get_connection()
+	mycursor=cnx.cursor(buffered = True, dictionary = True)		
 	try:
 		req = request.get_json()
-		orderNumber = req["orderNumber"]
-		cnx=cnxpool.get_connection()
-		mycursor=cnx.cursor(buffered = True, dictionary = True)			
+		orderNumber = req["orderNumber"]	
 		partnerKey = os.getenv("PARTNERKEY")
 		mycursor.execute("SELECT rec_trade_id FROM orderhistory WHERE number = %s" ,(orderNumber,))
 		myresult = mycursor.fetchall()

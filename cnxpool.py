@@ -17,6 +17,6 @@ dbconfig={
 
 cnxpool=pooling.MySQLConnectionPool(
     pool_name = "mypool",
-    pool_size = 32,
+    pool_size = 30,
     **dbconfig
 )

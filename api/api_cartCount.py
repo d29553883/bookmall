@@ -10,9 +10,9 @@ api_cartCount=Blueprint("api_cartCount", __name__, template_folder="templates")
 
 @api_cartCount.route("/api/cartCount")
 def cartCount():
+	cnx=cnxpool.get_connection()
+	mycursor=cnx.cursor()
 	try:
-		cnx=cnxpool.get_connection()
-		mycursor=cnx.cursor()
 		if session != {}:
 			email = session["e_mail"]
 			mycursor.execute("SELECT count(name) FROM cart WHERE email = %s " ,(email,))

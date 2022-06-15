@@ -6,10 +6,10 @@ api_history=Blueprint("api_history", __name__, template_folder="templates")
 
 @api_history.route('/api/hidtory', methods=['GET'])
 def history():
+  cnx=cnxpool.get_connection()
+  mycursor=cnx.cursor(buffered = True, dictionary = True)  
   try:
     if session != {}:
-      cnx=cnxpool.get_connection()
-      mycursor=cnx.cursor(buffered = True, dictionary = True)
       email = session["e_mail"]
       sql = "SELECT number,name,author,price,count FROM orderhistory WHERE email = %s" 
       adr = (email,)
