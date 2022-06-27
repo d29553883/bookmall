@@ -13,7 +13,7 @@ Here's the website : https://bookmall.store/
 ## Main Features
 
 #### Login
-* Session-Based Authentication
+* Session data Authentication
  
 ### Search for books by title keyword
 * Searching for products by using the keywords
