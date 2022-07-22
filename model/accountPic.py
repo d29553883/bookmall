@@ -32,7 +32,7 @@ class AccountPicModel:
     except:
       return {"error": True, "message": "伺服器內部錯誤"}, 500
     try:
-      sql = ("INSERT INTO account2 (email, image)"
+      sql = ("INSERT INTO account (email, image)"
       "VALUES (%s, %s) ON duplicate KEY UPDATE"
       "`email` =VALUES(`email`),`image`=VALUES(`image`)")
       adr = (email, "https://d1kfzndf9j846w.cloudfront.net/"+filename)
@@ -53,7 +53,7 @@ class AccountPicModel:
     try:
       email = session["e_mail"]
       name = session["name"]
-      sql = ("SELECT image FROM account2 WHERE email = %s")
+      sql = ("SELECT image FROM account WHERE email = %s")
       adr = (email,)
       cursor.execute(sql,adr)
       result = cursor.fetchall()		

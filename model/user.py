@@ -1,7 +1,10 @@
 from flask import *
 import json
 import requests
+from flask_bcrypt import Bcrypt
 from cnxpool import cnxpool
+
+bcrypt = Bcrypt()
 
 class UserModel:
   def memberinfo(self):
@@ -38,7 +41,10 @@ class UserModel:
         Name = req["name"]
         e_mail = req["email"]
         passWord = req["password"]
-        mycursor.execute("INSERT INTO member(name, email, password) VALUES(%s, %s, %s)",(Name, e_mail, passWord))
+        print(passWord)
+        hashed_password = bcrypt.generate_password_hash(passWord)
+        print(hashed_password)
+        mycursor.execute("INSERT INTO member(name, email, password) VALUES(%s, %s, %s)",(Name, e_mail, hashed_password))
         cnx.commit()
         return jsonify({
           "ok": True
@@ -56,28 +62,36 @@ class UserModel:
 
   def signin(self):
     cnx=cnxpool.get_connection()
-    mycursor=cnx.cursor()	
+    mycursor=cnx.cursor(buffered = True, dictionary = True)	
     try:
       req = request.get_json()
       e_mail = req["email"]
       passWord = req["password"]
-      sql = "SELECT email,password FROM member WHERE email = %s AND password = %s"
-      adr = (e_mail,passWord, )
+      sql = "SELECT * FROM member WHERE email = %s"
+      adr = (e_mail,)
       mycursor.execute(sql, adr)
       myresult = mycursor.fetchall()
       if myresult != []:
-        sql2 = "SELECT id,name,email FROM member WHERE email = %s"
-        adr2 = (e_mail,)
-        mycursor.execute(sql2, adr2)
-        myresult = mycursor.fetchall()
-        x = myresult[0]
-        x.__str__()
-        session['id']= int(x[0])
-        session["name"]= x[1]
-        session["e_mail"]= x[2]
-        return jsonify({
-          "ok": True
-        })
+        data = myresult[0]
+        hashed_password = data['password']
+        check_password = bcrypt.check_password_hash(hashed_password, passWord)
+        if check_password is True:
+          sql2 = "SELECT id,name,email FROM member WHERE email = %s"
+          adr2 = (e_mail,)
+          mycursor.execute(sql2, adr2)
+          myresult = mycursor.fetchall()
+          x = myresult[0]
+          session['id']= int(x['id'])
+          session["name"]= x['name']
+          session["e_mail"]= x['email']
+          return jsonify({
+            "ok": True
+          }),200
+        else:
+          return jsonify({
+            "error": True,
+            "message": "帳號或密碼錯誤"            
+          }),400
       else:
         return jsonify({
           "error": True,

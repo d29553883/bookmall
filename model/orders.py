@@ -21,7 +21,7 @@ class OrdersModel:
         bookNameList = req["bookName"]
         countList = req["count"]
         list_combined = list(zip(bookNameList, countList))
-        sql = "SELECT name,author,price from cart WHERE email = %s" 
+        sql = "SELECT name,author,price From cart WHERE email = %s" 
         adr = (email,)
         mycursor.execute(sql, adr)
         myresult = mycursor.fetchall()
@@ -67,11 +67,11 @@ class OrdersModel:
               cnx.commit()
             #取商品數量
             for i in list_combined:
-              sql = "update orderhistory set count = %s where name = %s AND number = %s"
+              sql = "UPDATE orderhistory set count = %s WHERE name = %s AND number = %s"
               adr = (i[1],i[0],number)
               mycursor.execute(sql,adr)
               cnx.commit()
-              sql2 = "update books set stock = stock - %s where name = %s"
+              sql2 = "UPDATE books set stock = stock - %s WHERE name = %s"
               adr2 = (i[1],i[0])
               mycursor.execute(sql2,adr2)
               cnx.commit()						

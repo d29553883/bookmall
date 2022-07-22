@@ -13,7 +13,7 @@ class RecommentModel:
       if session != {}:
         username = session["name"]
         email = session["e_mail"]	
-        mycursor.execute("INSERT INTO recomment2 (bookid, username, email, message) VALUES (%s,%s,%s,%s)", (bookid,username,email,message))
+        mycursor.execute("INSERT INTO recomment (bookid, username, email, message) VALUES (%s,%s,%s,%s)", (bookid,username,email,message))
         cnx.commit()
       else:
           return jsonify({

@@ -13,10 +13,10 @@ class BookIdModel:
       adr = (i,)
       mycursor.execute(sql,adr)
       result = mycursor.fetchall()
-      mycursor.execute("SELECT recomment2.message,recomment2.username,account2.image FROM recomment2 join account2 on recomment2.email = account2.email where recomment2.bookid =%s" , (bookId,))
+      mycursor.execute("SELECT recomment.message,recomment.username,account.image FROM recomment join account on recomment.email = account.email WHERE recomment.bookid =%s" , (bookId,))
       result2 = mycursor.fetchall()
       if result2 == []:
-        mycursor.execute("SELECT recomment2.message,recomment2.username FROM recomment2 where recomment2.bookid =%s" , (bookId,))
+        mycursor.execute("SELECT recomment.message,recomment.username FROM recomment WHERE recomment.bookid =%s" , (bookId,))
         result2 = mycursor.fetchall()
       if result != []:
         rl = result[0]

@@ -108,11 +108,11 @@ class AddCartModel:
         mycursor=cnx.cursor()			
         req = request.get_json()
         deleteBookId = req["deleteBookId"]		
-        sql2 = "SELECT price FROM cart where id = %s"
+        sql2 = "SELECT price FROM cart WHERE id = %s"
         adr2 = (deleteBookId,)
         mycursor.execute(sql2, adr2)
         myresult = mycursor.fetchone()
-        sql = "DELETE FROM cart where id = %s"
+        sql = "DELETE FROM cart WHERE id = %s"
         adr = (deleteBookId,)
         mycursor.execute(sql, adr)
         cnx.commit()		
