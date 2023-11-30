@@ -13,7 +13,7 @@ s3 = boto3.client('s3',
                     aws_secret_access_key = ACCESS_SECRET_KEY,
                      )
 
-BUCKET_NAME='aws-test-learn-s3'
+BUCKET_NAME='aws-test-bookmall'
 
 
 class AccountPicModel:
@@ -29,18 +29,18 @@ class AccountPicModel:
       print('圖檔名稱',filename)
     try:
       s3.upload_fileobj(img,BUCKET_NAME,filename)
-    except:
-      return {"error": True, "message": "伺服器內部錯誤"}, 500
+    except Exception as error:
+      return {"error": True, "message": str(error)}, 500
     try:
       sql = ("INSERT INTO account (email, image)"
       "VALUES (%s, %s) ON duplicate KEY UPDATE"
       "`email` =VALUES(`email`),`image`=VALUES(`image`)")
-      adr = (email, "https://d1kfzndf9j846w.cloudfront.net/"+filename)
+      adr = (email, "https://d26asqgkjvdez1.cloudfront.net/"+filename)
       mycursor.execute(sql,adr)
       cnx.commit()
-    except:
+    except Exception as error:
       cnx.rollback()
-      return {"error": True, "message": "伺服器內部錯誤"}, 500
+      return {"error": True, "message": str(error)}, 500
     finally:
       mycursor.close()
       cnx.close()
@@ -57,8 +57,8 @@ class AccountPicModel:
       adr = (email,)
       cursor.execute(sql,adr)
       result = cursor.fetchall()		
-    except:
-      return {"error": True, "message": "伺服器內部錯誤"}, 500
+    except Exception as error:
+      return {"error": True, "message": str(error)}, 500
     finally:
       cursor.close()
       cnx.close()
