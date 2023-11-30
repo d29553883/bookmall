@@ -45,6 +45,8 @@ Here's the website : https://bookmall.store/
 
 ## Backend Technique
 
+![image](https://res.cloudinary.com/davidlin/image/upload/v1658466715/logo/%E8%9E%A2%E5%B9%95%E6%93%B7%E5%8F%96%E7%95%AB%E9%9D%A2_2022-07-22_125523_o2fcd9.png)
+
 ### Deployment
 * Docker
 ### Environment
