@@ -63,7 +63,7 @@ def thankyou():
 		
 @app.route('/login')
 def login():
-    return google.authorize(callback=url_for('authorized', _external=True))	
+    return google.authorize(callback=url_for('https://book-mall.store/authorized', _external=True))	
 @app.route('/logout')
 def logout():
     session.pop('google_token', None)
