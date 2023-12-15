@@ -8,13 +8,13 @@ bcrypt = Bcrypt()
 
 class UserModel:
   def memberinfo(self):
-    if session != {}:
+    if session.get('name') != None:
       return jsonify({
         "data":{
           "name":session['name'],
           "email":session['e_mail']
         }
-      }),200	
+      }),200
     else:
       return jsonify({
         "data": None

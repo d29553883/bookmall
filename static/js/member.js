@@ -23,6 +23,11 @@ function siginin() {
     });
 }
 
+function siginin_google(){
+  window.location.href = "http://127.0.0.1:3000/login";
+
+}
+
 function singup() {
   let data = {
     name: document.getElementById("singupname").value,
@@ -62,7 +67,11 @@ function logout() {
       }
     });
 }
-
+document
+  .getElementsByClassName("login_google")[0]
+  .addEventListener("click", function () {
+    siginin_google();
+  });
 document.getElementById("logout_button").addEventListener("click", function () {
   logout();
 });

@@ -56,7 +56,9 @@ class AccountPicModel:
       sql = ("SELECT image FROM account WHERE email = %s")
       adr = (email,)
       cursor.execute(sql,adr)
-      result = cursor.fetchall()		
+      result = cursor.fetchall()
+      if result == []:
+        result = [{'image': ''}]
     except Exception as error:
       return {"error": True, "message": str(error)}, 500
     finally:

@@ -106,8 +106,8 @@ a {
 .popup-content {
   margin-top: 80px;
   width: 340px;
-  height: 280px;
-  max-height: 350px;
+  height: 315px;
+  max-height: 320px;
   background: #ffffff;
   border-radius: 5px;
   position: relative;
@@ -179,6 +179,26 @@ a {
   opacity: 1;
 }
 .login_text:hover{
+  opacity: 0.7;
+}
+.login_google {
+  display: flex;
+  border: 0;
+  background-color: #ffffff;
+  justify-content: center;
+  align-items: center;
+  border-radius: 5px;
+  width: 310px;
+  height: 47px;
+  margin: 5px 15px;
+  cursor: pointer;
+  color: #666666;
+  text-decoration: none;
+  font-size: 19px;
+  transition: 0.4s;
+  opacity: 1;
+}
+.login_google:hover{
   opacity: 0.7;
 }
 .close {
