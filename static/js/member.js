@@ -24,7 +24,7 @@ function siginin() {
 }
 
 function siginin_google(){
-  window.location.href = "http://127.0.0.1:3000/login";
+  window.location.href = "https://book-mall.store/login";
 
 }
 
