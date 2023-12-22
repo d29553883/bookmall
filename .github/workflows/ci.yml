@@ -18,6 +18,14 @@ jobs:
       env:
         DOCKER_USERNAME: ${{secrets.DOCKER_USERNAME}}
         DOCKER_PASSWORD: ${{secrets.DOCKER_PASSWORD}}
+        ACCESS_KEY_ID: ${{secrets.ACCESS_KEY_ID}}
+        ACCESS_SECRET_KEY: ${{secrets.ACCESS_SECRET_KEY}}
+        Endpoint: ${{secrets.ENDPOINT}}
+        PASSWORD: ${{secrets.PASSWORD}}
+        GOOGLE_CLIENT_ID: ${{secrets.GOOGLE_CLIENT_ID}}
+        GOOGLE_CLIENT_SERCET: ${{secrets.GOOGLE_CLIENT_SERCET}}
+        GOOGLE_CLIENT_URI: ${{secrets.GOOGLE_CLIENT_URI}}
+        PARTNERKEY: ${{secrets.PARTNERKEY}}
       run: docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
     - name: Build the Docker image
       run: docker build -t d29553883/bookmall .
