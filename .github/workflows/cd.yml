@@ -16,6 +16,6 @@ jobs:
     - name: Pull Docker image
       run: sudo docker pull d29553883/bookmall:latest
     - name: Delete Old docker container
-      run: sudo docker rm -f d29553883/bookmall || true     
+      run: sudo docker rm -f bookmall_container || true     
     - name: Run Docker Container
-      run: sudo docker run --name d29553883/bookmall -p 8000:3000 --env-file /home/ubuntu/bookmall/.env -d d29553883/bookmall
+      run: sudo docker run --name bookmall_container -p 8000:3000 --env-file /home/ubuntu/bookmall/.env -d d29553883/bookmall
