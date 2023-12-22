@@ -18,6 +18,9 @@ jobs:
       env:
         DOCKER_USERNAME: ${{secrets.DOCKER_USERNAME}}
         DOCKER_PASSWORD: ${{secrets.DOCKER_PASSWORD}}
+      run: docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
+    - name: Build the Docker image
+      env:
         ACCESS_KEY_ID: ${{secrets.ACCESS_KEY_ID}}
         ACCESS_SECRET_KEY: ${{secrets.ACCESS_SECRET_KEY}}
         Endpoint: ${{secrets.ENDPOINT}}
@@ -25,9 +28,7 @@ jobs:
         GOOGLE_CLIENT_ID: ${{secrets.GOOGLE_CLIENT_ID}}
         GOOGLE_CLIENT_SERCET: ${{secrets.GOOGLE_CLIENT_SERCET}}
         GOOGLE_CLIENT_URI: ${{secrets.GOOGLE_CLIENT_URI}}
-        PARTNERKEY: ${{secrets.PARTNERKEY}}
-      run: docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
-    - name: Build the Docker image
+        PARTNERKEY: ${{secrets.PARTNERKEY}}    
       run: docker build -t d29553883/bookmall .
     - name: Push to Dockerhub
       run: docker push d29553883/bookmall
