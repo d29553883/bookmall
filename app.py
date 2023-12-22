@@ -13,7 +13,6 @@ from flask_oauthlib.client import OAuth
 import os
 app=Flask(__name__)
 
-
 app.config["JSON_AS_ASCII"]=False
 app.config["TEMPLATES_AUTO_RELOAD"]=True
 app.secret_key='yyfgswetjhj'
