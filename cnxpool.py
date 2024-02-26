@@ -10,9 +10,9 @@ host = os.getenv("Endpoint")
 
 dbconfig={
     "host" : host,
-    "user" : "admin",
+    "user" : "root",
     "password" : password ,                                            
-    "database" : "website",
+    "database" : "bookmall",
 }
 
 cnxpool=pooling.MySQLConnectionPool(
