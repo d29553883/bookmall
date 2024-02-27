@@ -14,6 +14,22 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
+
+    # 安装 Python 3.9.7 和 Pytest
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.9.7
+
+    - name: Install dependencies
+      run: |
+        pip3 install --upgrade pip
+        pip3 install -r requirements.txt
+
+    # 運行 Pytest 测试
+    - name: Run Pytest tests
+      run: pytest
+
     - name: Login Dockerhub
       env:
         DOCKER_USERNAME: ${{secrets.DOCKER_USERNAME}}
