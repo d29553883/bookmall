@@ -30,8 +30,8 @@ jobs:
     - name: Run Pytest tests
       run: pytest
       env:
-        PASSWORD: ${{ secrets.ENDPOINT }}
-        Endpoint: ${{ secrets.PASSWORD }}
+        ENDPOINT: ${{ secrets.ENDPOINT }}
+        PASSWORD: ${{ secrets.PASSWORD }}
 
 
     - name: Login Dockerhub
