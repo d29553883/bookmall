@@ -6,7 +6,7 @@ from dotenv import load_dotenv
 load_dotenv()
 
 password = os.getenv("PASSWORD")
-host = os.getenv("Endpoint")
+host = os.getenv("ENDPOINT")
 
 dbconfig={
     "host" : host,

@@ -1,6 +1,5 @@
 from flask import *
-import json
-import requests
+
 from cnxpool import cnxpool
 
 class BookIdModel:

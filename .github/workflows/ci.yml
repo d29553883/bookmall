@@ -29,6 +29,10 @@ jobs:
     # 運行 Pytest 测试
     - name: Run Pytest tests
       run: pytest
+      env:
+        PASSWORD: ${{ secrets.ENDPOINT }}
+        Endpoint: ${{ secrets.PASSWORD }}
+
 
     - name: Login Dockerhub
       env:
