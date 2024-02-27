@@ -19,11 +19,13 @@ jobs:
     - name: Get old container ID
       run: |
         CONTAINER_ID=$(sudo docker ps -q -f "name=bookmall_container")
-        sudo echo " Container ID: $CONTAINER_ID"
-        IMAGE_ID=$(sudo docker images | grep '<none>' | awk '{ print $3 }')     
+        sudo echo " Container ID: $CONTAINER_ID"     
     - name: Delete Old docker container
       run: sudo docker rm -f bookmall_container || true     
     - name: Delete Old docker image
-      run: sudo docker rmi -f $IMAGE_ID || true        
+      run: |
+        IMAGE_ID=$(sudo docker images | grep '<none>' | awk '{ print $3 }')
+        sudo echo " Image ID: $IMAGE_ID"
+        sudo docker rmi -f $IMAGE_ID || true  
     - name: Run Docker Container
       run: sudo docker run --name bookmall_container -p 8000:3000 --env-file /home/ubuntu/bookmall/.env -d d29553883/bookmall
