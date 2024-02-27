@@ -3,7 +3,7 @@ Online bookstore project
 
 ## Demo
 
-Here's the website : https://bookmall.store/
+Here's the website : https://book-mall.store/
 
 | Account | Password |
 | :----:| :----: | 
@@ -41,7 +41,7 @@ Here's the website : https://bookmall.store/
 
 
 ## System Architecture
-![image](https://res.cloudinary.com/davidlin/image/upload/v1655190630/logo/%E6%B5%81%E7%A8%8B%E5%9C%96_lmyubc.jpg)
+![image](https://res.cloudinary.com/davidlin/image/upload/v1709037819/%E6%9E%B6%E6%A7%8B%E5%9C%96_nhjytu.png)
 
 ## Backend Technique
 
@@ -49,8 +49,13 @@ Here's the website : https://bookmall.store/
 
 ### Deployment
 * Docker
+* GitHub Actions
+* Pytest
 ### Environment
 * Python Flask
+### Authentication
+* JWT
+* OAuth 2.0
 ### Database
 * MySQL
 ### Cloud Service (AWS)
