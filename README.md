@@ -54,7 +54,7 @@ Here's the website : https://book-mall.store/
 ### Environment
 * Python Flask
 ### Authentication
-* JWT
+* session
 * OAuth 2.0
 ### Database
 * MySQL
